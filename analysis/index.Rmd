@@ -8,4 +8,27 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+## Introduction
+
+This website contains a short introduction to Snakemake intended for a biostatistics/statistical genetics audience. This tutorial is intended to be a "quick start". We should be able to cover this material in about an hour. With the material in this tutorial, you will be able to write a basic Snakemake pipeline and execute it either locally or on a cluster. 
+
+Due to time constraints, there is lots of material that we won't cover in this guide. Once you are started, there are several excellent resources for learning more. 
+
+
+### Resources
+
+Snakemake resources:
+
+- Snakemake Documentation
+- Software Carpentry Course
+
+Other resources:
+
+- Python
+- ARC-TS quick start guides
+- Bash refresher
+
+## Tutorial
+
+0. Installation
+
