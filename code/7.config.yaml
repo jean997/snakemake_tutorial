@@ -1,0 +1,3 @@
+geno_thresh: 0.1
+qual_thresh: 95
+maf: 0.01

@@ -8,7 +8,7 @@ editor_options:
 
 ## Introduction
 
-You should do the steps in this section before the day of the tutorial. If you run into an issue, send me an email and I will try to help. You may find that it is easiest to complete this tutorial on one of the institutional clusters because we will make use of some bioinformatic software that is already installed in those places. However, you can also do it on a personal computer and links to install the required software are given below. The steps you will perform in this section are: 
+You should do the steps in this section before the day of the tutorial. If you run into an issue, [**post an issue**](https://github.com/jean997/snakemake_tutorial/issues). That way others who have the same issue will be able to see it.  You may find that it is easiest to complete this tutorial on one of the institutional clusters because we will make use of some bioinformatic software that is already installed in those places. However, you can also do it on a personal computer and links to install the required software are given below. The steps you will perform in this section are: 
 
 1. Install Conda or Mamba (if not already installed)
 2. Install Snakemake via Conda
@@ -245,7 +245,7 @@ Navigate into your new directory and clone the github directory for the tutorial
 
 ```
 cd snakemake_tutorial
-git clone jkljkjkljkljl
+git clone https://github.com/jean997/snakemake_tutorial.git
 ```
 You will now see a directory called `snakemake_tutorial` in your current directory. Verify this by typing `ls`. 
 Inside the directory, you will see the files used to create this website as well as some directories with material we will use. Check this by typing
@@ -259,6 +259,6 @@ The material you need to complete the tutorial is in the `data/` directory and t
 ```
 mv snakemake_tutorial/data .
 mv snakemake_tutorial/code .
-rmdir snakemake_tutorial
+rm -rf snakemake_tutorial
 ```
 

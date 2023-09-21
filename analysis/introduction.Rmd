@@ -9,13 +9,13 @@ editor_options:
 
 ## What is a Workflow?
 
-A workflow is a series of analytical steps to go from raw data to an analysis result. Often in biostatistics, statistical genetics, or bioinformatics, our workflows include several steps with intermediate outputs. We might need to combine multiple different programs in sequence. If we are unlucky, these programs might even have conflicting dependencies. 
+A workflow is a series of analytically steps to go from raw data to an analysis result. Often in biostatistics, statistical genetics, or bioinformatics, our workflows include several steps with intermediate outputs. We might need to combine multiple different programs in sequence. If we are unlucky, these programs might even have conflicting dependencies. 
 
 For example, to run a genome-wide association study, we need to format phenotype and genotype data, perform quality control checks and filters, compute a genetic relatedness matrix, and then use one of several available packages to perform association tests for each variant.
 
 ## Workflow Challenges
 
-A natural way to run a workflow is to execute each step one at a time "by hand". Every analysis process will involve this type of process to some degree, and this is not a bad way to start working through a procdeure.
+A natural way to run a workflow is to execute each step one at a time "by hand". Every analysis process will involve this type of process to some degree, and this is not a bad way to start working through a procedure.
 
 However! This is not a great way to produce repeatable results that you have high confidence in. The "by hand" strategy is very vulnerable to common errors. For example, you may modify an early data normalization or processing step but forget to replace the file name in all of the downstream steps. 
 

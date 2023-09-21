@@ -361,7 +361,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -372,8 +372,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -386,9 +386,9 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>snakemake_tutorial/</code> <span
@@ -411,33 +411,36 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtree7957b05a6c8c35612663aa612bb89ade2e53c224targetblank7957b05a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtree5757821321cb6038403acd5d696702d506b3b0fctargetblank5757821a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/jean997/snakemake_tutorial/tree/7957b05a6c8c35612663aa612bb89ade2e53c224" target="_blank">7957b05</a>
+<a href="https://github.com/jean997/snakemake_tutorial/tree/5757821321cb6038403acd5d696702d506b3b0fc" target="_blank">5757821</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtree7957b05a6c8c35612663aa612bb89ade2e53c224targetblank7957b05a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtree5757821321cb6038403acd5d696702d506b3b0fctargetblank5757821a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -447,7 +450,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/jean997/snakemake_tutorial/tree/7957b05a6c8c35612663aa612bb89ade2e53c224" target="_blank">7957b05</a>.
+<a href="https://github.com/jean997/snakemake_tutorial/tree/5757821321cb6038403acd5d696702d506b3b0fc" target="_blank">5757821</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -463,6 +466,33 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  code/1.Snakefile
+    Untracked:  code/2.Snakefile
+    Untracked:  code/3.Snakefile
+    Untracked:  code/4.Snakefile
+    Untracked:  code/5.Snakefile
+    Untracked:  code/6.Snakefile
+    Untracked:  code/7.Snakefile
+    Untracked:  code/7.config.yaml
+    Untracked:  code/8.Snakefile
+    Untracked:  code/8.config.yaml
+    Untracked:  code/9.Snakefile
+    Untracked:  code/cluster.yaml
+    Untracked:  code/nohup.out
+    Untracked:  code/run-snakemake8.sh
+    Untracked:  code/run-snakemake9.sh
+    Untracked:  code/snaketutorial.yaml
+    Untracked:  data/chr20.vcf.gz
+    Untracked:  data/chr21.vcf.gz
+    Untracked:  data/chr22.vcf.gz
+
+Unstaged changes:
+    Modified:   analysis/index.Rmd
+    Modified:   analysis/install.Rmd
+    Modified:   analysis/introduction.Rmd
+    Deleted:    code/README.md
 
 </code></pre>
 <p>
@@ -510,6 +540,23 @@ Message
 <tbody>
 <tr>
 <td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/5757821321cb6038403acd5d696702d506b3b0fc/docs/introduction.html" target="_blank">5757821</a>
+</td>
+<td>
+Jean Morrison
+</td>
+<td>
+2023-09-21
+</td>
+<td>
+build site
+</td>
+</tr>
+<tr>
+<td>
 Rmd
 </td>
 <td>
@@ -551,8 +598,8 @@ add installation instructions
 </div>
 <div id="what-is-a-workflow" class="section level2">
 <h2>What is a Workflow?</h2>
-<p>A workflow is a series of analytical steps to go from raw data to an
-analysis result. Often in biostatistics, statistical genetics, or
+<p>A workflow is a series of analytically steps to go from raw data to
+an analysis result. Often in biostatistics, statistical genetics, or
 bioinformatics, our workflows include several steps with intermediate
 outputs. We might need to combine multiple different programs in
 sequence. If we are unlucky, these programs might even have conflicting
@@ -568,7 +615,7 @@ variant.</p>
 <p>A natural way to run a workflow is to execute each step one at a time
 “by hand”. Every analysis process will involve this type of process to
 some degree, and this is not a bad way to start working through a
-procdeure.</p>
+procedure.</p>
 <p>However! This is not a great way to produce repeatable results that
 you have high confidence in. The “by hand” strategy is very vulnerable
 to common errors. For example, you may modify an early data

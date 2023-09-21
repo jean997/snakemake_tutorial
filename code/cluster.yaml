@@ -1,0 +1,15 @@
+__default__:
+    mem: "1G"
+    cpus: "1"
+    name: "{rule}-{wildcards}"
+    log: "log/snake-{rule}-{wildcards}"
+    time: "2:00:00"
+
+variant_qc:
+    mem: "5G"
+    cpus: "4"
+
+ld_prune:
+    mem: "5G"
+    cpus: "4"
+
