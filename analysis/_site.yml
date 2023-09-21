@@ -1,7 +1,7 @@
-name: "Snakemake in 60 Minutes"
+name: "Snakemake Tutorial"
 output_dir: ../docs
 navbar:
-  title: "Snakemake in 60 Minutes"
+  title: "Snakemake Tutorial"
   left:
   - text: Home
     href: index.html
