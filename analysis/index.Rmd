@@ -1,5 +1,5 @@
 ---
-title: "Home"
+title: "Snakemake for Biostatistics Quick-Start Tutorial"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
@@ -14,21 +14,28 @@ This website contains a short introduction to Snakemake intended for a biostatis
 
 Due to time constraints, there is lots of material that we won't cover in this guide. Once you are started, there are several excellent resources for learning more. 
 
+This website was created for a tutorial given at the University of Michigan, so some instructions specifically reference U of M computing resources. 
+
 
 ### Resources
 
 Snakemake resources:
 
-- Snakemake Documentation
-- Software Carpentry Course
+- [Snakemake Documentation](https://snakemake.readthedocs.io/en/stable/)
+- [Snakemake for Bioinformatics Software Carpentry Course](https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/)
 
 Other resources:
 
-- Python
-- ARC-TS quick start guides
-- Bash refresher
+- [Getting Started with Python Wiki](https://www.python.org/about/gettingstarted/)
+- [ARC-TS User Guide for GreatLakes](https://arc.umich.edu/greatlakes/user-guide/)
+- [Introduction to Unix shell](https://swcarpentry.github.io/shell-novice/)
+
+### Pre-Requisites
+
+In this tutorial, I will assume that you are using a computer with either a Linux or Mac operating system. If your personal computer runs Windows, I recommend doing this tutorial on one of the clusters available to you (e.g. the Biostatistics department cluster, the CSG cluster, or Great Lakes). It is possible to run Snakemake on Windows, but I do not have very much experience with this.
 
 ## Tutorial
 
-0. Installation
+0. [Installation and Set-Up](install.html)
+1. [Introduction](introduction.html)
 

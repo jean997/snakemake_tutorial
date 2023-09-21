@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+<meta name="date" content="2023-09-20" />
+
+<title>Installation and Setup</title>
+
+<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Snakemake in 60 Minutes</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Installation and Setup</h1>
+<h4 class="date">2023-09-20</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2023-09-21
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>snakemake_tutorial/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R
+Markdown file created these results, you’ll want to first commit it to
+the Git repo. If you’re still working on the analysis, you can ignore
+this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstronga32ee26">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong> a32ee26
+</a>
+</p>
+</div>
+<div id="strongRepositoryversionstronga32ee26"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version a32ee26.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  analysis/install.Rmd
+    Untracked:  analysis/introduction.Rmd
+
+Unstaged changes:
+    Modified:   analysis/_site.yml
+    Modified:   analysis/index.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with
+<code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>You should do the steps in this section before the day of the
+tutorial. If you run into an issue, send me an email and I will try to
+help. You may find that it is easiest to complete this tutorial on one
+of the institutional clusters because we will make use of some
+bioinformatic software that is already installed in those places.
+However, you can also do it on a personal computer and links to install
+the required software are given below. The steps you will perform in
+this section are:</p>
+<ol style="list-style-type: decimal">
+<li>Install Conda or Mamba (if not already installed)</li>
+<li>Install Snakemake via Conda</li>
+<li>Select a text editor to use for the tutorial and, if necessary, get
+used to using it.</li>
+<li>If not using one of the clusters, install bcftools and Plink2</li>
+<li>Set up a working directory where you will complete the tutorial</li>
+</ol>
+</div>
+<div id="install-snakemake" class="section level2">
+<h2>Install Snakemake</h2>
+<p>I strongly recommend installing Snakemake via Conda/Mamba. Conda is a
+tool for managing software dependencies (Mamba is an alternative to
+Conda). If you install Snakemake via Conda, Conda will manage all of the
+software dependencies for you and installation will most likely go
+smoothly. If you install via pip instead, you may run into issues. Full
+installation instructions can be found on the <a
+href="https://snakemake.readthedocs.io/en/stable/getting_started/installation.html">Snakemake
+documentation page here</a>, where they recommend using Mamba because it
+is more efficient. I have included installation instructions for
+miniconda below. However, you could use any Conda or Mamba installation
+you like.</p>
+<div id="install-miniconda" class="section level3">
+<h3>Install miniconda</h3>
+<p>If you already have a version of Conda or Mamba installed, skip this
+step.</p>
+<p>The following instructions will <a
+href="https://docs.conda.io/projects/miniconda/en/latest/">install
+miniconda</a> according to the instructions on the miniconda website.
+You could also use the graphical installer with <a
+href="https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html">instructions
+here</a>.</p>
+<p><strong>On Mac</strong>: Open a terminal and navigate to your home
+directory. Then, type these commands.</p>
+<pre><code>mkdir -p ~/miniconda3
+curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm -rf ~/miniconda3/miniconda.sh</code></pre>
+<p>Now initialize miniconda</p>
+<pre><code>~/miniconda3/bin/conda init bash
+~/miniconda3/bin/conda init zsh</code></pre>
+<p><strong>On Linux</strong> (e.g. one of the clusters or a Linux
+operating system on a personal computer): Open a terminal and navigate
+to your home directory. Then, type these commands.</p>
+<pre><code>mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm -rf ~/miniconda3/miniconda.sh</code></pre>
+<p>Now initialize miniconda</p>
+<pre><code>~/miniconda3/bin/conda init bash
+~/miniconda3/bin/conda init zsh</code></pre>
+<p>Now close your terminal and open a new terminal window. If you are
+working on the cluster, close your ssh connection and then log back in.
+At this point the string <code>(base)</code> should have appeared at the
+beginning of the prompt line in the terminal. For me, this looks
+like</p>
+<pre><code>(base) [jvmorr@gl-login2 ~]$</code></pre>
+</div>
+<div id="install-snakemake-via-conda" class="section level3">
+<h3>Install Snakemake via Conda</h3>
+<p>On either Mac or Linux, in the terminal type</p>
+<pre><code>conda create -c conda-forge -c bioconda -n snakemake snakemake</code></pre>
+<p>This installation may take several minutes. There will be a prompt
+asking you to confirm installation (say yes).</p>
+<p>Now test your installation. To activate the Conda environment that
+Snakemake is installed in type</p>
+<pre><code>conda activate snakemake</code></pre>
+<p>You should now see <code>(snakemake)</code> at the beginning of the
+prompt line instead of <code>(base)</code>. To make sure Snakemake is
+installed properly, type</p>
+<pre><code>snakemake --help</code></pre>
+<p>You should see the help page print to the screen.</p>
+</div>
+</div>
+<div id="prepare-for-the-tutorial" class="section level2">
+<h2>Prepare for the Tutorial</h2>
+<div id="choose-a-text-editor" class="section level3">
+<h3>Choose a text editor</h3>
+<p>You will need some way to edit text files. Snakemake is a
+python-based language so it is very picky about punctuation, spaces, and
+white space characters. You will need a text editor that only deposits
+the characters you mean to have in the document.</p>
+<p>Here are some options that will work:</p>
+<ul>
+<li>Any text editor or IDE you already use to write python or R
+code.</li>
+<li>Vim</li>
+<li>emacs</li>
+<li>The TextEdit app that comes installed on Mac. You should turn off
+auto-capitalization and grammar replacements. In the Edit menu, go to
+Substitutions and un-check Text Replacement.</li>
+<li>Nano: Nano is a minimal text editor that comes pre-installed on
+almost all Linux systems as well as Mac. Access Nano from the command
+line by typing <code>nano</code>.</li>
+<li>If you are using GreatLakes, you can edit files in the web interface
+by clicking on the “Edit” option in the drop down menu next to the file
+name.</li>
+</ul>
+<p>Regardless of what you are using, spend a few moments to make sure
+you are comfortable editing text files in the system you will be working
+in.</p>
+</div>
+<div id="install-the-software-used-in-the-tutorial"
+class="section level3">
+<h3>Install the software used in the tutorial</h3>
+<p>In this tutorial we will use bcftools, Plink2, and R.</p>
+<div id="on-the-biostatistics-department-cluster"
+class="section level4">
+<h4>On the Biostatistics Department Cluster</h4>
+<p>All of these programs are already installed. To access them, you will
+need to load the modules. You will need to do this every time you open a
+new terminal window.</p>
+<pre><code>module load bcftools
+module load plink
+module load R</code></pre>
+<p>Check the versions of each of these programs. I found these
+results</p>
+<pre><code>bcftools --version
+bcftools 1.17
+Using htslib 1.17
+Copyright (C) 2023 Genome Research Ltd.
+License Expat: The MIT/Expat license
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+plink2 --version
+PLINK v2.00a4LM 64-bit Intel (9 Jan 2023)
+
+R --version
+R version 4.2.2 (2022-10-31) -- &quot;Innocent and Trusting&quot;
+Copyright (C) 2022 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under the terms of the
+GNU General Public License versions 2 or 3.
+For more information about these matters see
+https://www.gnu.org/licenses/.</code></pre>
+</div>
+<div id="on-the-csg-cluster" class="section level4">
+<h4>On the CSG Cluster</h4>
+<p>All of these programs are already installed and you do not need to do
+anything to access them. Go ahead and check the versions to make sure
+they are running for you.</p>
+<pre><code>bcftools --version
+bcftools 1.17
+Using htslib 1.17
+Copyright (C) 2023 Genome Research Ltd.
+License Expat: The MIT/Expat license
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+plink2 --version 
+PLINK v2.00a3LM 64-bit Intel (20 Apr 2021)
+
+
+R --version
+R version 4.3.1 (2023-06-16) -- &quot;Beagle Scouts&quot;
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under the terms of the
+GNU General Public License versions 2 or 3.
+For more information about these matters see
+https://www.gnu.org/licenses/.
+</code></pre>
+</div>
+<div id="on-greatlakes" class="section level4">
+<h4>On GreatLakes</h4>
+<p>All of these programs are already installed. To access them, you need
+to load the modules. You must first load the <code>Bioinformatics</code>
+module group and then you can load the modules for bcftools and Plink2.
+You will need to do this every time you open a new terminal window.</p>
+<pre><code>module load Bioinformatics
+module load bcftools
+module load plink
+module load R</code></pre>
+<p>Check the versions:</p>
+<pre><code>bcftools --version
+bcftools 1.12
+Using htslib 1.12
+Copyright (C) 2021 Genome Research Ltd.
+License Expat: The MIT/Expat license
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+
+plink2 --version
+PLINK v2.00a2LM 64-bit Intel (20 Oct 2019)
+
+
+R --version
+R version 4.3.1 (2023-06-16) -- &quot;Beagle Scouts&quot;
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under the terms of the
+GNU General Public License versions 2 or 3.
+For more information about these matters see
+https://www.gnu.org/licenses/.</code></pre>
+</div>
+<div id="on-your-personal-computer" class="section level4">
+<h4>On your personal computer:</h4>
+<p>Below are links to installation instructions for each of these
+programs:</p>
+<ul>
+<li><a
+href="http://pd3.github.io/bcftools/howtos/install.html">bcftools</a></li>
+<li><a href="https://www.cog-genomics.org/plink/2.0/">Plink2</a></li>
+<li><a href="https://www.r-project.org/">R</a></li>
+</ul>
+</div>
+</div>
+<div id="download-data-and-set-up-a-working-directory"
+class="section level3">
+<h3>Download data and set up a working directory</h3>
+<p>Create a directory where you will do this tutorial. You can do this
+from a terminal by typing</p>
+<pre><code>mkdir /my/new/directory</code></pre>
+<p>where you substitute the name of your new directory for
+<code>/my/new/directory</code>. For example, I am working on GreatLakes
+and I want to do the tutorial in my home directory, so I used</p>
+<pre><code>mkdir /home/jvmorr/snakemake_tutorial</code></pre>
+<p>You can call your directory whatever you want.</p>
+<p>Navigate into your new directory and clone the github directory for
+the tutorial.</p>
+<pre><code>cd snakemake_tutorial
+git clone jkljkjkljkljl</code></pre>
+<p>You will now see a directory called <code>snakemake_tutorial</code>
+in your current directory. Verify this by typing <code>ls</code>. Inside
+the directory, you will see the files used to create this website as
+well as some directories with material we will use. Check this by
+typing</p>
+<pre><code>ls snakemake_tutorial</code></pre>
+<p>The material you need to complete the tutorial is in the
+<code>data/</code> directory and the <code>code/</code> directory. We
+can get rid of all of the rest. Lets move these two directories up one
+level and then delete everything else.</p>
+<pre><code>mv snakemake_tutorial/data .
+mv snakemake_tutorial/code .
+rmdir snakemake_tutorial</code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

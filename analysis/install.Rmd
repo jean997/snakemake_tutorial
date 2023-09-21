@@ -1,0 +1,264 @@
+---
+title: "Installation and Setup"
+date: "2023-09-20"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+You should do the steps in this section before the day of the tutorial. If you run into an issue, send me an email and I will try to help. You may find that it is easiest to complete this tutorial on one of the institutional clusters because we will make use of some bioinformatic software that is already installed in those places. However, you can also do it on a personal computer and links to install the required software are given below. The steps you will perform in this section are: 
+
+1. Install Conda or Mamba (if not already installed)
+2. Install Snakemake via Conda
+3. Select a text editor to use for the tutorial and, if necessary, get used to using it.
+4. If not using one of the clusters, install bcftools and Plink2
+5. Set up a working directory where you will complete the tutorial
+
+## Install Snakemake
+
+ I strongly recommend installing Snakemake via Conda/Mamba. Conda is a tool for managing software dependencies (Mamba is an alternative to Conda). If you install Snakemake via Conda, Conda will manage all of the software dependencies for you and installation will most likely go smoothly. If you install via pip instead, you may run into issues. Full installation instructions can be found on the [Snakemake documentation page here](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html), where they recommend using Mamba because it is more efficient. I have included installation instructions for miniconda below. However, you could use any Conda or Mamba installation you like.
+
+
+### Install miniconda
+
+If you already have a version of Conda or Mamba installed, skip this step.
+
+The following instructions will [install miniconda](https://docs.conda.io/projects/miniconda/en/latest/) according to the instructions on the miniconda website. You could also use the graphical installer with [instructions here](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html).
+
+**On Mac**: Open a terminal and navigate to your home directory. Then, type these commands.
+
+```
+mkdir -p ~/miniconda3
+curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm -rf ~/miniconda3/miniconda.sh
+```
+
+Now initialize miniconda
+
+```
+~/miniconda3/bin/conda init bash
+~/miniconda3/bin/conda init zsh
+```
+
+
+**On Linux** (e.g. one of the clusters or a Linux operating system on a personal computer): 
+Open a terminal and navigate to your home directory. Then, type these commands.
+
+```
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm -rf ~/miniconda3/miniconda.sh
+```
+
+Now initialize miniconda
+
+```
+~/miniconda3/bin/conda init bash
+~/miniconda3/bin/conda init zsh
+```
+
+Now close your terminal and open a new terminal window. If you are working on the cluster, close your ssh connection and then log back in. At this point the string `(base)` should have appeared at the beginning of the prompt line in the terminal. For me, this looks like 
+
+```
+(base) [jvmorr@gl-login2 ~]$
+```
+
+
+### Install Snakemake via Conda
+
+On either Mac or Linux, in the terminal type 
+
+```
+conda create -c conda-forge -c bioconda -n snakemake snakemake
+```
+
+This installation may take several minutes. There will be a prompt asking you to confirm installation (say yes). 
+
+Now test your installation. To activate the Conda environment that Snakemake is installed in type
+
+```
+conda activate snakemake
+```
+
+You should now see `(snakemake)` at the beginning of the prompt line instead of `(base)`. To make sure Snakemake is installed properly, type 
+
+```
+snakemake --help
+```
+
+You should see the help page print to the screen.
+
+## Prepare for the Tutorial
+
+### Choose a text editor
+
+You will need some way to edit text files. Snakemake is a python-based language so it is very picky about punctuation, spaces, and white space characters. You will need a text editor that only deposits the characters you mean to have in the document. 
+
+Here are some options that will work:
+
++ Any text editor or IDE you already use to write python or R code.
++ Vim
++ emacs
++ The TextEdit app that comes installed on Mac. You should turn off auto-capitalization and grammar replacements. In the Edit menu, go to Substitutions and un-check Text Replacement.
++ Nano: Nano is a minimal text editor that comes pre-installed on almost all Linux systems as well as Mac. Access Nano from the command line by typing `nano`. 
++ If you are using GreatLakes, you can edit files in the web interface by clicking on the "Edit" option in the drop down menu next to the file name.
+
+Regardless of what you are using, spend a few moments to make sure you are comfortable editing text files in the system you will be working in.
+
+### Install the software used in the tutorial
+
+In this tutorial we will use bcftools, Plink2, and R. 
+
+#### On the Biostatistics Department Cluster
+
+All of these programs are already installed. To access them, you will need to load the modules. You will need to do this every time you open a new terminal window.
+```
+module load bcftools
+module load plink
+module load R
+```
+Check the versions of each of these programs. I found these results
+
+```
+bcftools --version
+bcftools 1.17
+Using htslib 1.17
+Copyright (C) 2023 Genome Research Ltd.
+License Expat: The MIT/Expat license
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+plink2 --version
+PLINK v2.00a4LM 64-bit Intel (9 Jan 2023)
+
+R --version
+R version 4.2.2 (2022-10-31) -- "Innocent and Trusting"
+Copyright (C) 2022 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under the terms of the
+GNU General Public License versions 2 or 3.
+For more information about these matters see
+https://www.gnu.org/licenses/.
+```
+
+#### On the CSG Cluster
+
+All of these programs are already installed and you do not need to do anything to access them. Go ahead and check the versions to make sure they are running for you.
+
+```
+bcftools --version
+bcftools 1.17
+Using htslib 1.17
+Copyright (C) 2023 Genome Research Ltd.
+License Expat: The MIT/Expat license
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+plink2 --version 
+PLINK v2.00a3LM 64-bit Intel (20 Apr 2021)
+
+
+R --version
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under the terms of the
+GNU General Public License versions 2 or 3.
+For more information about these matters see
+https://www.gnu.org/licenses/.
+
+```
+
+#### On GreatLakes
+
+All of these programs are already installed. To access them, you need to load the modules. You must first load the `Bioinformatics` module group and then you can load the modules for bcftools and Plink2. You will need to do this every time you open a new terminal window.
+
+```
+module load Bioinformatics
+module load bcftools
+module load plink
+module load R
+```
+Check the versions:
+
+```
+bcftools --version
+bcftools 1.12
+Using htslib 1.12
+Copyright (C) 2021 Genome Research Ltd.
+License Expat: The MIT/Expat license
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+
+plink2 --version
+PLINK v2.00a2LM 64-bit Intel (20 Oct 2019)
+
+
+R --version
+R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
+Copyright (C) 2023 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under the terms of the
+GNU General Public License versions 2 or 3.
+For more information about these matters see
+https://www.gnu.org/licenses/.
+```
+
+#### On your personal computer:
+
+Below are links to installation instructions for each of these programs:
+
++ [bcftools](http://pd3.github.io/bcftools/howtos/install.html)
++ [Plink2](https://www.cog-genomics.org/plink/2.0/)
++ [R](https://www.r-project.org/)
+
+
+
+### Download data and set up a working directory
+
+Create a directory where you will do this tutorial. You can do this from a terminal by typing
+
+```
+mkdir /my/new/directory
+```
+
+where you substitute the name of your new directory for `/my/new/directory`. For example, I am working on GreatLakes and I want to do the tutorial in my home directory, so I used
+
+```
+mkdir /home/jvmorr/snakemake_tutorial
+```
+
+You can call your directory whatever you want. 
+
+Navigate into your new directory and clone the github directory for the tutorial.
+
+```
+cd snakemake_tutorial
+git clone jkljkjkljkljl
+```
+You will now see a directory called `snakemake_tutorial` in your current directory. Verify this by typing `ls`. 
+Inside the directory, you will see the files used to create this website as well as some directories with material we will use. Check this by typing
+
+```
+ls snakemake_tutorial
+```
+
+The material you need to complete the tutorial is in the `data/` directory and the `code/` directory. We can get rid of all of the rest. Lets move these two directories up one level and then delete everything else.
+
+```
+mv snakemake_tutorial/data .
+mv snakemake_tutorial/code .
+rmdir snakemake_tutorial
+```
+

@@ -1,0 +1,37 @@
+---
+title: "Introduction"
+author: "Jean Morrison"
+date: "2023-09-20"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## What is a Workflow?
+
+A workflow is a series of analytical steps to go from raw data to an analysis result. Often in biostatistics, statistical genetics, or bioinformatics, our workflows include several steps with intermediate outputs. We might need to combine multiple different programs in sequence. If we are unlucky, these programs might even have conflicting dependencies. 
+
+For example, to run a genome-wide association study, we need to format phenotype and genotype data, perform quality control checks and filters, compute a genetic relatedness matrix, and then use one of several available packages to perform association tests for each variant.
+
+## Workflow Challenges
+
+A natural way to run a workflow is to execute each step one at a time "by hand". Every analysis process will involve this type of process to some degree, and this is not a bad way to start working through a procdeure.
+
+However! This is not a great way to produce repeatable results that you have high confidence in. The "by hand" strategy is very vulnerable to common errors. For example, you may modify an early data normalization or processing step but forget to replace the file name in all of the downstream steps. 
+
+This is also not a scalable strategy. For example, suppose we are running GWAS of protein levels measured by a high-throughput technology. Rather than running association tests for one phenotype, we need to run association tests for thousands of phenotypes. One option would be to write a bash script loops through the genes and submits the job to the cluster. However, writing this code and then monitoring job submission and completion takes time and can be a bit fiddly. 
+
+## Snakemake Advantages
+
+Snakemake is a tool for creating and executing workflows. 
+
++ A Snakemake workflow is repeatable. This is especially true if you use Conda inside of Snakemake to control the software environment of each step.
+
++ A Snakemake workflow is scalable. It is easy to modify a workflow to be performed many times or with multiple options. Snakemake can automate the cluster submission process so you don't have to manage it.
+
++ A Snakemake workflow is human readable. You will have a single document that describes exactly what you did at each step, rather than having scrpts spread over many directories.
+
+
+## Simple Workflow Example
+
+To write a Snakemake workflow, we need to describe each step in the procedure using three attributes: input files, output files, and the action (shell command) 
