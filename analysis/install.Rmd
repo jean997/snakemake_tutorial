@@ -103,7 +103,7 @@ Here are some options that will work:
 + Any text editor or IDE you already use to write python or R code.
 + Vim
 + emacs
-+ The TextEdit app that comes installed on Mac. You should turn off auto-capitalization and grammar replacements. In the Edit menu, go to Substitutions and un-check Text Replacement.
++ The TextEdit app that comes installed on Mac. You should turn off auto-capitalization and grammar replacements and ask it for plain text. In the Format menu select "Make Plain Text". In the Edit menu, go to Substitutions and un-check Text Replacement.
 + Nano: Nano is a minimal text editor that comes pre-installed on almost all Linux systems as well as Mac. Access Nano from the command line by typing `nano`. 
 + If you are using GreatLakes, you can edit files in the web interface by clicking on the "Edit" option in the drop down menu next to the file name.
 
