@@ -1,0 +1,7 @@
+QC:
+    geno_thresh: 0.1
+    qual_thresh: 95
+    maf: 0.01
+LD:
+    kb: "1000kb"
+    r2: 0.01
