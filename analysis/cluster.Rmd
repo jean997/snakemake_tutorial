@@ -31,13 +31,13 @@ On the CSG and Biostatistics clusters, the following line will (probably) work
 snakemake --slurm --jobs 10 -p 
 ```
 
-The `--jobs` flag indicates the maximum number of jobs to submit at a time. You may want to increase this if you have a larger job underway. 
-
 On GreatLakes you will (probably) also need to specify the account you are using.
 
 ```
 snakemake --slurm --jobs 10 --default-resources slurm_account=<your SLURM account>
 ```
+
+The `--jobs` flag indicates the maximum number of jobs to submit at a time. You may want to increase this if you have a larger job underway. I recommend adding the flag `--latency-wait 60` which increases the amount of time that Snakemake will wait for the expected outputs to appear. 
 
 ### Resources
 
@@ -122,8 +122,14 @@ I like to put my Snakemake command into a bash script (like `run-snakemake.sh`) 
 nohup ./run-snakemake.sh &
 ```
 
-The `nohup` and `&` additions to this line cause snakemake to run in the background and keep running if the terminal is closed.
+The `nohup` and `&` additions to this line cause snakemake to run in the background and keep running if the terminal is closed. This works regardless of what type of snakemake call you are using. You could also type the snakemake command directly between the `nohup` and the `&`.
 
 ### Running Snakemake on a compute node
 
-I also prefer to run long-running Snakemake jobs on compute nodes rather than the log in node. There are two advantages to doing this. The first is that the job is easy to kill. I can simply cancel the session that it is running in. The second advantage is that my Snakemake job has its own designated resources and isn't going to use up too many resources on the log in node. My personal preferred strategy is to start an interactive job inside of a screen session. 
+I also prefer to run long-running Snakemake jobs on compute nodes rather than the log in node. There are two advantages to doing this. The first is that the job is easy to kill. I can simply cancel the session that it is running in. The second advantage is that my Snakemake job has its own designated resources and isn't going to use up too many resources on the log in node. My personal preferred strategy is to start an interactive job inside of a `screen` session using a command like 
+
+```
+screen salloc --account=jvmorr0 --mem 1G --time 10:00:00
+```
+
+I like to give these jobs really long running times, sometimes I will give them several days and then just kill them when I am done with them. Once the node is allocated, you can run your Snakemake command in the background using `nohup` and `&`. Then to leave the interactive session, type `ctrl-a-d` to "detach" the screen session. To join back in, use `screen -r`. This allows you to close your terminal window without killing the interactive session.

@@ -14,7 +14,7 @@
 
 <title>Installation and Setup</title>
 
-<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -30,7 +30,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -192,8 +192,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -201,9 +201,16 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
+  content: "&#xe258;";
   border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -395,7 +402,7 @@ title="This is the local directory in which the code in this file was executed."
 This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
 analysis was created with <a
   href="https://github.com/workflowr/workflowr">workflowr</a> (version
-1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
 that were applied when the results were created. The <em>Past
 versions</em> tab lists the development history.
 </p>
@@ -424,15 +431,15 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtreeeb6e9c4c6b840db31c33c0ce79cd05352e14c22etargetblankeb6e9c4a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtreea52b174d307fef9a99186b584bc835ec43fa27c7targetblanka52b174a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/jean997/snakemake_tutorial/tree/eb6e9c4c6b840db31c33c0ce79cd05352e14c22e" target="_blank">eb6e9c4</a>
+<a href="https://github.com/jean997/snakemake_tutorial/tree/a52b174d307fef9a99186b584bc835ec43fa27c7" target="_blank">a52b174</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtreeeb6e9c4c6b840db31c33c0ce79cd05352e14c22etargetblankeb6e9c4a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtreea52b174d307fef9a99186b584bc835ec43fa27c7targetblanka52b174a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -442,7 +449,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/jean997/snakemake_tutorial/tree/eb6e9c4c6b840db31c33c0ce79cd05352e14c22e" target="_blank">eb6e9c4</a>.
+<a href="https://github.com/jean997/snakemake_tutorial/tree/a52b174d307fef9a99186b584bc835ec43fa27c7" target="_blank">a52b174</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -458,10 +465,6 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    .Rproj.user/
-
-Untracked files:
-    Untracked:  analysis/basics.Rmd
-    Untracked:  analysis/wildcards.Rmd
 
 </code></pre>
 <p>
@@ -507,6 +510,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/bd1284567d64550c555671ae288dbbd9d82cd914/docs/install.html" target="_blank">bd12845</a>
+</td>
+<td>
+Jean Morrison
+</td>
+<td>
+2023-09-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd

@@ -11,9 +11,9 @@
 
 <meta name="author" content="Jean Morrison" />
 
-<meta name="date" content="2023-09-21" />
+<meta name="date" content="2023-09-22" />
 
-<title>Parameters and Config Files</title>
+<title>Using Conda with Snakemake</title>
 
 <script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -355,9 +355,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Parameters and Config Files</h1>
+<h1 class="title toc-ignore">Using Conda with Snakemake</h1>
 <h4 class="author">Jean Morrison</h4>
-<h4 class="date">2023-09-21</h4>
+<h4 class="date">2023-09-22</h4>
 
 </div>
 
@@ -365,7 +365,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -376,8 +376,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -386,13 +386,13 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2023-09-21
+<strong>Last updated:</strong> 2023-09-22
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>snakemake_tutorial/</code> <span
@@ -415,18 +415,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown is untracked by Git. To know which version of the R
+Markdown file created these results, you’ll want to first commit it to
+the Git repo. If you’re still working on the analysis, you can ignore
+this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -466,7 +469,16 @@ were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  analysis/conda.Rmd
+
+Unstaged changes:
+    Modified:   analysis/cluster.Rmd
+    Modified:   analysis/install.Rmd
+    Modified:   analysis/introduction.Rmd
 
 </code></pre>
 <p>
@@ -481,269 +493,86 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
-These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/config.Rmd</code>) and HTML
-(<code>docs/config.html</code>) files. If you’ve configured a remote Git
-repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
-in the table below to view the files as they were in that past version.
+There are no past versions. Publish this analysis with
+<code>wflow_publish()</code> to start tracking its development.
 </p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jean997/snakemake_tutorial/blob/8972212f91d460d988b288ce79a8bdec2b2ac6ec/analysis/config.Rmd" target="_blank">8972212</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-updates
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/8972212f91d460d988b288ce79a8bdec2b2ac6ec/docs/config.html" target="_blank">8972212</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-updates
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jean997/snakemake_tutorial/blob/656c8b498acf8a5b8b85dc977576aa4c42ff2e34/analysis/config.Rmd" target="_blank">656c8b4</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-add new content
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/656c8b498acf8a5b8b85dc977576aa4c42ff2e34/docs/config.html" target="_blank">656c8b4</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-add new content
-</td>
-</tr>
-</tbody>
-</table>
-</div>
 <hr>
 </div>
 </div>
 </div>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>In this section we will learn about the <code>params:</code> field
-for rules how to pass options to Snakemake using a config file.</p>
-<p>In this Section:</p>
-<ol style="list-style-type: decimal">
-<li>Modify a rule to use <code>params:</code></li>
-<li>Write and use a config file in our workflow</li>
-</ol>
+<p>In this section we will learn how to use different conda environments
+for different rules. The steps in this section will take some time to
+complete due to time spent building environments.</p>
+<p>In this section: 1. Introduction to Conda nad why to use it 2. Using
+a conda environment with Snakemake</p>
 </div>
-<div id="params" class="section level2">
-<h2>Params</h2>
-<p>In our previous workflow, two of our steps, <code>variant_qc</code>
-and <code>ld_prune</code> include parameters that we hard coded into the
-command on the <code>shell:</code> line. We could hav also passed these
-in using the <code>params:</code> field and placeholders.</p>
-<p>For example, we could use</p>
-<pre><code>rule variant_qc:
-    input: &quot;data/all.vcf.gz&quot;
-    output: multiext(&quot;data/all_varqc&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;, &quot;.log&quot;)
-    params: geno_thresh = 0.1, qual_thresh = 95, maf = 0.01
-    shell: &quot;&quot;&quot;
-           plink2 --vcf {input} --set-missing-var-ids &#39;@:#&#39; --snps-only \
-                 --var-min-qual {params.qual_thresh} \
-                 --geno {params.geno_thresh} \
-                 --maf {params.maf} \
-                 --make-pgen \
-                 --out data/all_varqc 
-          &quot;&quot;&quot;
-          
-rule ld_prune:
-    input: multiext(&quot;data/{prefix}&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;)
-    output: &quot;data/{prefix}.prune.in&quot;
-    params: kb = &quot;1000kb&quot;, r2 = 0.01
-    shell: &quot;&quot;&quot;
-          plink2 --pfile data/{wildcards.prefix} \
-          --indep-pairwise {params.kb} {params.r2} \
-          --out data/{wildcards.prefix}
-          &quot;&quot;&quot;
-</code></pre>
-<p>Notice that we are now using triple quotes on the shell line. This
-allows us to have line breaks inside of the command which makes for
-easier reading.</p>
+<div id="what-is-conda" class="section level2">
+<h2>What is Conda</h2>
+<p>Conda for creating self contained software environments. Different
+environments can have different dependencies. This means that you can
+run software with incompatible dependencies on the same system. You have
+already used some conda commands to install Snakemake. Some important
+Conda commands are:</p>
+<ul>
+<li>Make a new environment
+<code>conda crate -n my-environment</code></li>
+<li>List the environments currently available
+<code>cond env list</code></li>
+<li>Switch to a named enviroment in your current session
+<code>conda activate my-environment</code></li>
+<li>Configure conda to enable Bioconda or conda-forge channels
+(repositories of software)
+<code>conda config --add channels bioconda</code></li>
+<li>Install a single package in the current environment
+<code>conda install snakemake</code></li>
+<li>Save a list of the packages in an environment to a yaml file
+<code>conda env export -n my-environment &gt; my-environment.yaml</code></li>
+<li>Recreate an environment from a yaml file
+<code>conda env create -n cloned-environment -f my-environment.yaml</code></li>
+</ul>
 </div>
-<div id="config-files" class="section level2">
-<h2>Config Files</h2>
-<p>Putting the parameters on the <code>params:</code> line makes for
-easier reading but doesn’t really add much flexibility. The parameters
-are still hard coded into the Snakefile. Often the utility of the
-<code>params:</code> field comes from combining it with a configuration
-file. This is especially useful if you want to distribute your workflow
-to others. It is a lot easier to tell someone how to change a
-configuration file than to tell them how to edit your Snakefile.</p>
-<p>Lets create a configuration file that contains the variant QC
-parameters and the LD pruning parameters. The config file will be a yaml
-file (“yet another markup language”) which is a nice, human readable way
-to specify information. Create a file in your tutorial directory called
-<code>config.yaml</code> (or any other name you prefer) and put this
-content in it:</p>
-<pre><code>QC:
-    geno_thresh: 0.1
-    qual_thresh: 95
-    maf: 0.01
-LD: 
-    kb: &quot;1000kb&quot;
-    r2: 0.01</code></pre>
-<p>Each line of the yaml file begins with a label followed by a colon.
-You can have as many sub-levels as you want, indicated by tabs.</p>
-<p>Now we need to tell Snakemake where to find the configuration file.
-Add this line to the top of your Snakefile</p>
-<pre><code>configfile: &quot;config.yaml&quot;</code></pre>
-<p>Finally, we need to access the values in the config file. We can do
-this with nested brackets, so <code>config["QC"]["geno_thresh"]</code>
-indicates the content of the <code>geno_thresh:</code> line.</p>
-<p>Modify the <code>params:</code> lines of the <code>variant_qc</code>
-and <code>ld_prune</code> rules. These rules should now read</p>
-<pre><code>rule variant_qc:
-    input: &quot;data/all.vcf.gz&quot;
-    output: multiext(&quot;data/all_varqc&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;, &quot;.log&quot;)
-    params: geno_thresh = config[&quot;QC&quot;][&quot;geno_thresh&quot;], 
-            qual_thresh = config[&quot;QC&quot;][&quot;qual_thresh&quot;], 
-            maf = config[&quot;QC&quot;][&quot;maf&quot;]
-    shell: &quot;&quot;&quot;
-           plink2 --vcf {input} --set-missing-var-ids &#39;@:#&#39; --snps-only \
-                 --var-min-qual {params.qual_thresh} \
-                 --geno {params.geno_thresh} \
-                 --maf {params.maf} \
-                 --make-pgen \
-                 --out data/all_varqc 
-          &quot;&quot;&quot;
-
-rule ld_prune:
-    input: multiext(&quot;data/{prefix}&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;)
-    output: &quot;data/{prefix}.prune.in&quot;
-    params: kb = config[&quot;LD&quot;][&quot;kb&quot;], r2 = config[&quot;LD&quot;][&quot;r2&quot;]
-    shell: &quot;&quot;&quot;
-          plink2 --pfile data/{wildcards.prefix} \
-          --indep-pairwise {params.kb} {params.r2} \
-          --out data/{wildcards.prefix}
-          &quot;&quot;&quot;</code></pre>
-<p><strong>Special Challenge</strong>: Modify the <code>maf</code> line
-of the config file to give a list, like <code>[0.01, 0.05]</code>. Can
-you modify the pipeline so that two sets of pca results are produced,
-one using each of the values given to the <code>maf</code> line in the
-config file? An answer is in <code>code/6.Snakefile</code> and
-<code>code/6.config.yaml</code>.</p>
+<div id="why-use-conda" class="section level2">
+<h2>Why Use Conda?</h2>
+<p>You may remember from the installation page that all three clusters
+are running slightly different versions of bcftools, plink, and R. There
+was also an installation issue for GreatLakes that required downgrading
+python for compatibility with the installed version of Plink. Software
+version issues could affect reproducibility. It’s possible that we could
+have gotten different results due to using different software versions.
+To avoid this, we can specify a conda environment to run each rule in.
+Different rules can use different environments so we can also have a
+workflow that includes rules with incompatible dependencies.</p>
 </div>
-<div id="final-snakefile" class="section level2">
-<h2>Final Snakefile</h2>
-<p>The Snakefile you should have at the end of this section (excluding
-the special challenge) can be found in <code>code/5.Snakefile</code>
-(that file uses <code>5.config.yaml</code> instead of
-<code>config.yaml</code>).</p>
-<pre><code>configfile: &quot;config.yaml&quot;
-
-rule all:
-    input: &quot;results/all_varqc.eigenvec&quot;, expand(&quot;results/chr{c}_stats.txt&quot;, c = range(20, 23))
-
-rule get_stats:
-    input: &quot;data/chr{c}.vcf.gz&quot;
-    output: &quot;results/chr{c}_stats.txt&quot;
-    shell: &quot;mkdir -p results; bcftools stats {input} &gt; {output}&quot;
-
-rule combine_data:
+<div id="using-conda-with-snakemake" class="section level2">
+<h2>Using Conda with Snakemake</h2>
+<p>Let’s say that we want a particular rule to use a particular conda
+environment. In the case of our tutorial, we might create and
+environment that has bcftools and plink2 installed. (<strong>Side
+note</strong>: Installing R through Conda does not always go well and I
+tend not to do this. However, you can install R and many R packages
+through Conda). To create our bcftools and plink2 environment use</p>
+<pre><code>conda create -n tutorial
+conda activate tutorial
+conda install -c bioconda bcftools
+conda install -c bioconda plink2</code></pre>
+<p>Now we need to export this environment</p>
+<pre><code>conda env export -n tutorial &gt; tutorial.yaml</code></pre>
+<p>Finally, to use the environment for a rule, add the line
+<code>conda: tutorial.yaml</code> to the rule. For example</p>
+<pre><code>rule combine_data:
     input: expand(&quot;data/chr{c}.vcf.gz&quot;, c = range(20, 23))
     output: &quot;data/all.vcf.gz&quot;
-    shell: &quot;bcftools concat -o {output} {input}&quot;
-
-rule variant_qc:
-    input: &quot;data/all.vcf.gz&quot;
-    output: multiext(&quot;data/all_varqc&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;, &quot;.log&quot;)
-    params: geno_thresh = config[&quot;QC&quot;][&quot;geno_thresh&quot;],
-            qual_thresh = config[&quot;QC&quot;][&quot;qual_thresh&quot;],
-            maf = config[&quot;QC&quot;][&quot;maf&quot;]
-    shell: &quot;&quot;&quot;
-           plink2 --vcf {input} --set-missing-var-ids &#39;@:#&#39; --snps-only \
-                 --var-min-qual {params.qual_thresh} \
-                 --geno {params.geno_thresh} \
-                 --maf {params.maf} \
-                 --make-pgen \
-                 --out data/all_varqc 
-          &quot;&quot;&quot;
-
-rule ld_prune:
-    input: multiext(&quot;data/{prefix}&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;)
-    output: &quot;data/{prefix}.prune.in&quot;
-    params: kb = config[&quot;LD&quot;][&quot;kb&quot;], r2 = config[&quot;LD&quot;][&quot;r2&quot;]
-    shell: &quot;&quot;&quot;
-          plink2 --pfile data/{wildcards.prefix} \
-          --indep-pairwise {params.kb} {params.r2} \
-          --out data/{wildcards.prefix}
-          &quot;&quot;&quot;
-
-rule pca:
-    input: data = multiext(&quot;data/{prefix}&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;), prune = &quot;data/{prefix}.prune.in&quot;
-    output: &quot;results/{prefix}.eigenvec&quot;
-    shell: &quot;plink2 --pfile data/{wildcards.prefix} --extract {input.prune} --pca --out results/{wildcards.prefix}&quot;
-</code></pre>
+    conda: &quot;tutorial.yaml&quot;
+    shell: &quot;bcftools concat -o {output} {input}&quot;</code></pre>
+<p>Additionally, add the <code>--use-conda</code> option to the
+Snakemake command line command. If you are using Conda instead of Mamba,
+also add <code>--conda-frontend conda</code>. The first time you run
+this, it will take a while because it will build the environment and
+reinstall all of the software. However, as long as the yaml file remains
+unchanged, Snakemake will use the same environment for future runs.</p>
 </div>
 
 

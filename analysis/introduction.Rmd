@@ -17,9 +17,13 @@ For example, to run a genome-wide association study, we need to format phenotype
 
 A natural way to run a workflow is to execute each step one at a time "by hand". Every analysis process will involve this type of process to some degree, and this is not a bad way to start working through a procedure.
 
-However! This is not a great way to produce repeatable results that you have high confidence in. The "by hand" strategy is very vulnerable to common errors. For example, you may modify an early data normalization or processing step but forget to replace the file name in all of the downstream steps. 
+However! This is not a great way to produce repeatable results that you have high confidence in. 
 
-This is also not a scalable strategy. For example, suppose we are running GWAS of protein levels measured by a high-throughput technology. Rather than running association tests for one phenotype, we need to run association tests for thousands of phenotypes. One option would be to write a bash script loops through the genes and submits the job to the cluster. However, writing this code and then monitoring job submission and completion takes time and can be a bit fiddly. 
++ The "by hand" strategy is very vulnerable to common errors. For example, you may modify an early data normalization or processing step but forget to replace the file name in all of the downstream steps. 
+
++ This is also not a scalable strategy. For example, suppose we are running GWAS of protein levels measured by a high-throughput technology. Rather than running association tests for one phenotype, we need to run association tests for thousands of phenotypes. One option would be to write a bash script loops through the genes and submits the job to the cluster. However, writing this code and then monitoring job submission and completion takes time and can be a bit fiddly. 
+
++ Finally, the "by hand" strategy is hard to repeat and hard to accurately document
 
 ## Snakemake Advantages
 
@@ -34,4 +38,37 @@ Snakemake is a tool for creating and executing workflows.
 
 ## Simple Workflow Example
 
-To write a Snakemake workflow, we need to describe each step in the procedure using three attributes: input files, output files, and the action (shell command) 
+To write a Snakemake workflow, we need to describe each step in the procedure using three attributes: **input files**, **output files**, and the **action** (shell command). Let's practice by writing the inputs, outputs, and action for the process of making tea. The steps we want to perform are:
+
+
+1. Boil water
+2. Pour the water into a mug with a tea bag
+3. Add cream and sugar
+
+What are inputs/outputs for each step? What is the final target result?
+
+We could write this procedure in the style of a Snakemake workflow by writing each step as a rule with inputs and outputs. The `rule all` at the top indicates the final target. We will talk more about this in the next section.
+
+```
+rule all:
+    input: "tasty cup of tea"
+
+rule boil:
+    input: "cold water"
+    output: "boiling water"
+    shell: "Put the cold water in the kettle and boil it."
+    
+rule steep:
+     input: "boiling water", "mug", "tea bag"
+     output: "black tea"
+     shell: "Put the mug in the tea bag. Pour the boiling water over the tea bag."
+
+rule flavor:
+     input: "black tea", "milk", "sugar"
+     output: "tasty cup of tea"
+     shell: "Add milk and sugar to black tea"
+```
+
+## Errors
+
+You are guaranteed to get some errors when you are developing a Snakemake pipeline. Generally, Snakemake error messages are fairly informative and it is helpful to get used to reading them. If you get an error during this tutorial, don't worry! Share your error with the group and we will probably all learn something.

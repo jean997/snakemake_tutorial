@@ -92,6 +92,16 @@ snakemake --help
 
 You should see the help page print to the screen.
 
+**update**: If you are going to do this tutorial on Great Lakes, install snakemake using the following command
+
+```
+conda create -c conda-forge -c bioconda -n snakemake3.9 snakemake python=3.9
+```
+
+If you use this command, your environment will be named `snakemake3.9` so you will activate it with `conda activate snakemake3.9`. By default, `conda` will use the latest version of python (3.11) which will conflict with the Bioinformatics module that we need to run the tutorial. There is an alternative way around this, but we won't learn about it until the very end of the tutorial. 
+
+
+
 ## Prepare for the Tutorial
 
 ### Choose a text editor

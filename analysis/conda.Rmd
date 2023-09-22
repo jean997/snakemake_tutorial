@@ -1,0 +1,69 @@
+---
+title: "Using Conda with Snakemake"
+author: "Jean Morrison"
+date: "2023-09-22"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+In this section we will learn how to use different conda environments for different rules. The steps in this section will take some time to complete due to time spent building environments.
+
+In this section:
+1. Introduction to Conda nad why to use it
+2. Using a conda environment with Snakemake
+
+
+## What is Conda
+
+Conda for creating self contained software environments. Different environments can have different dependencies. This means that you can run software with incompatible dependencies on the same system. You have already used some conda commands to install Snakemake. Some important Conda commands are:
+
++ Make a new environment `conda crate -n my-environment`
++ List the environments currently available `cond env list`
++ Switch to a named enviroment in your current session `conda activate my-environment`
++ Configure conda to enable Bioconda or conda-forge channels (repositories of software) `conda config --add channels bioconda`
++ Install a single package in the current environment `conda install snakemake`
++ Save a list of the packages in an environment to a yaml file
+`conda env export -n my-environment > my-environment.yaml`
++ Recreate an environment from a yaml file
+`conda env create -n cloned-environment -f my-environment.yaml`
+
+
+
+## Why Use Conda?
+
+You may remember from the installation page that all three clusters are running slightly different versions of bcftools, plink, and R. There was also an installation issue for GreatLakes that required downgrading python for compatibility with the installed version of Plink. Software version issues could affect reproducibility. It's possible that we could have gotten different results due to using different software versions. 
+To avoid this, we can specify a conda environment to run each rule in. Different rules can use different environments so we can also have a workflow that includes rules with incompatible dependencies. 
+
+## Using Conda with Snakemake
+
+Let's say that we want a particular rule to use a particular conda environment. In the case of our tutorial, we might create and environment that has bcftools and plink2 installed. (**Side note**: Installing R through Conda does not always go well and I tend not to do this. However, you can install R and many R packages through Conda). To create our bcftools and plink2 environment use
+
+```
+conda create -n tutorial
+conda activate tutorial
+conda install -c bioconda bcftools
+conda install -c bioconda plink2
+```
+
+Now we need to export this environment
+
+```
+conda env export -n tutorial > tutorial.yaml
+```
+
+Finally, to use the environment for a rule, add the line `conda: tutorial.yaml` to the rule. For example
+
+```
+rule combine_data:
+    input: expand("data/chr{c}.vcf.gz", c = range(20, 23))
+    output: "data/all.vcf.gz"
+    conda: "tutorial.yaml"
+    shell: "bcftools concat -o {output} {input}"
+```
+
+Additionally, add the `--use-conda` option to the Snakemake command line command. If you are using Conda instead of Mamba, also add `--conda-frontend conda`. 
+The first time you run this, it will take a while because it will build the environment and reinstall all of the software. However, as long as the yaml file remains unchanged, Snakemake will use the same environment for future runs. 
+

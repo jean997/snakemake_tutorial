@@ -15,7 +15,7 @@
 
 <title>Introduction</title>
 
-<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -31,7 +31,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -193,8 +193,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -202,9 +202,16 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
+  content: "&#xe258;";
   border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -326,15 +333,12 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Snakemake in 60 Minutes</a>
+      <a class="navbar-brand" href="index.html">Snakemake Tutorial</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
   <a href="index.html">Home</a>
-</li>
-<li>
-  <a href="about.html">About</a>
 </li>
 <li>
   <a href="license.html">License</a>
@@ -382,7 +386,7 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2023-09-21
+<strong>Last updated:</strong> 2023-09-22
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -400,7 +404,7 @@ title="This is the local directory in which the code in this file was executed."
 This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
 analysis was created with <a
   href="https://github.com/workflowr/workflowr">workflowr</a> (version
-1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
 that were applied when the results were created. The <em>Past
 versions</em> tab lists the development history.
 </p>
@@ -432,15 +436,15 @@ HTML.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtree5757821321cb6038403acd5d696702d506b3b0fctargetblank5757821a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtreea52b174d307fef9a99186b584bc835ec43fa27c7targetblanka52b174a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/jean997/snakemake_tutorial/tree/5757821321cb6038403acd5d696702d506b3b0fc" target="_blank">5757821</a>
+<a href="https://github.com/jean997/snakemake_tutorial/tree/a52b174d307fef9a99186b584bc835ec43fa27c7" target="_blank">a52b174</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtree5757821321cb6038403acd5d696702d506b3b0fctargetblank5757821a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtreea52b174d307fef9a99186b584bc835ec43fa27c7targetblanka52b174a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -450,7 +454,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/jean997/snakemake_tutorial/tree/5757821321cb6038403acd5d696702d506b3b0fc" target="_blank">5757821</a>.
+<a href="https://github.com/jean997/snakemake_tutorial/tree/a52b174d307fef9a99186b584bc835ec43fa27c7" target="_blank">a52b174</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -465,34 +469,12 @@ were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .Rhistory
     Ignored:    .Rproj.user/
 
-Untracked files:
-    Untracked:  code/1.Snakefile
-    Untracked:  code/2.Snakefile
-    Untracked:  code/3.Snakefile
-    Untracked:  code/4.Snakefile
-    Untracked:  code/5.Snakefile
-    Untracked:  code/6.Snakefile
-    Untracked:  code/7.Snakefile
-    Untracked:  code/7.config.yaml
-    Untracked:  code/8.Snakefile
-    Untracked:  code/8.config.yaml
-    Untracked:  code/9.Snakefile
-    Untracked:  code/cluster.yaml
-    Untracked:  code/nohup.out
-    Untracked:  code/run-snakemake8.sh
-    Untracked:  code/run-snakemake9.sh
-    Untracked:  code/snaketutorial.yaml
-    Untracked:  data/chr20.vcf.gz
-    Untracked:  data/chr21.vcf.gz
-    Untracked:  data/chr22.vcf.gz
-
 Unstaged changes:
-    Modified:   analysis/index.Rmd
     Modified:   analysis/install.Rmd
     Modified:   analysis/introduction.Rmd
-    Deleted:    code/README.md
 
 </code></pre>
 <p>
@@ -538,6 +520,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jean997/snakemake_tutorial/blob/1939b863021964f82ca1f01092199b45b4700cc8/analysis/introduction.Rmd" target="_blank">1939b86</a>
+</td>
+<td>
+Jean Morrison
+</td>
+<td>
+2023-09-21
+</td>
+<td>
+add code and update site
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/1939b863021964f82ca1f01092199b45b4700cc8/docs/introduction.html" target="_blank">1939b86</a>
+</td>
+<td>
+Jean Morrison
+</td>
+<td>
+2023-09-21
+</td>
+<td>
+add code and update site
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -617,17 +633,22 @@ variant.</p>
 some degree, and this is not a bad way to start working through a
 procedure.</p>
 <p>However! This is not a great way to produce repeatable results that
-you have high confidence in. The “by hand” strategy is very vulnerable
-to common errors. For example, you may modify an early data
-normalization or processing step but forget to replace the file name in
-all of the downstream steps.</p>
-<p>This is also not a scalable strategy. For example, suppose we are
+you have high confidence in.</p>
+<ul>
+<li><p>The “by hand” strategy is very vulnerable to common errors. For
+example, you may modify an early data normalization or processing step
+but forget to replace the file name in all of the downstream
+steps.</p></li>
+<li><p>This is also not a scalable strategy. For example, suppose we are
 running GWAS of protein levels measured by a high-throughput technology.
 Rather than running association tests for one phenotype, we need to run
 association tests for thousands of phenotypes. One option would be to
 write a bash script loops through the genes and submits the job to the
 cluster. However, writing this code and then monitoring job submission
-and completion takes time and can be a bit fiddly.</p>
+and completion takes time and can be a bit fiddly.</p></li>
+<li><p>Finally, the “by hand” strategy is hard to repeat and hard to
+accurately document</p></li>
+</ul>
 </div>
 <div id="snakemake-advantages" class="section level2">
 <h2>Snakemake Advantages</h2>
@@ -648,8 +669,46 @@ having scrpts spread over many directories.</p></li>
 <div id="simple-workflow-example" class="section level2">
 <h2>Simple Workflow Example</h2>
 <p>To write a Snakemake workflow, we need to describe each step in the
-procedure using three attributes: input files, output files, and the
-action (shell command)</p>
+procedure using three attributes: <strong>input files</strong>,
+<strong>output files</strong>, and the <strong>action</strong> (shell
+command). Let’s practice by writing the inputs, outputs, and action for
+the process of making tea. The steps we want to perform are:</p>
+<ol style="list-style-type: decimal">
+<li>Boil water</li>
+<li>Pour the water into a mug with a tea bag</li>
+<li>Add cream and sugar</li>
+</ol>
+<p>What are inputs/outputs for each step? What is the final target
+result?</p>
+<p>We could write this procedure in the style of a Snakemake workflow by
+writing each step as a rule with inputs and outputs. The
+<code>rule all</code> at the top indicates the final target. We will
+talk more about this in the next section.</p>
+<pre><code>rule all:
+    input: &quot;tasty cup of tea&quot;
+
+rule boil:
+    input: &quot;cold water&quot;
+    output: &quot;boiling water&quot;
+    shell: &quot;Put the cold water in the kettle and boil it.&quot;
+    
+rule steep:
+     input: &quot;boiling water&quot;, &quot;mug&quot;, &quot;tea bag&quot;
+     output: &quot;black tea&quot;
+     shell: &quot;Put the mug in the tea bag. Pour the boiling water over the tea bag.&quot;
+
+rule flavor:
+     input: &quot;black tea&quot;, &quot;milk&quot;, &quot;sugar&quot;
+     output: &quot;tasty cup of tea&quot;
+     shell: &quot;Add milk and sugar to black tea&quot;</code></pre>
+</div>
+<div id="errors" class="section level2">
+<h2>Errors</h2>
+<p>You are guaranteed to get some errors when you are developing a
+Snakemake pipeline. Generally, Snakemake error messages are fairly
+informative and it is helpful to get used to reading them. If you get an
+error during this tutorial, don’t worry! Share your error with the group
+and we will probably all learn something.</p>
 </div>
 
 

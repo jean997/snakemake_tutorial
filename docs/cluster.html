@@ -434,15 +434,15 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtree8972212f91d460d988b288ce79a8bdec2b2ac6ectargetblank8972212a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtreea52b174d307fef9a99186b584bc835ec43fa27c7targetblanka52b174a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/jean997/snakemake_tutorial/tree/8972212f91d460d988b288ce79a8bdec2b2ac6ec" target="_blank">8972212</a>
+<a href="https://github.com/jean997/snakemake_tutorial/tree/a52b174d307fef9a99186b584bc835ec43fa27c7" target="_blank">a52b174</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtree8972212f91d460d988b288ce79a8bdec2b2ac6ectargetblank8972212a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtreea52b174d307fef9a99186b584bc835ec43fa27c7targetblanka52b174a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -452,7 +452,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/jean997/snakemake_tutorial/tree/8972212f91d460d988b288ce79a8bdec2b2ac6ec" target="_blank">8972212</a>.
+<a href="https://github.com/jean997/snakemake_tutorial/tree/a52b174d307fef9a99186b584bc835ec43fa27c7" target="_blank">a52b174</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -468,9 +468,6 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    .Rproj.user/
-
-Unstaged changes:
-    Deleted:    data/chr20.vcf.gz
 
 </code></pre>
 <p>
@@ -521,6 +518,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/jean997/snakemake_tutorial/blob/a52b174d307fef9a99186b584bc835ec43fa27c7/analysis/cluster.Rmd" target="_blank">a52b174</a>
+</td>
+<td>
+Jean Morrison
+</td>
+<td>
+2023-09-21
+</td>
+<td>
+updates
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/a52b174d307fef9a99186b584bc835ec43fa27c7/docs/cluster.html" target="_blank">a52b174</a>
+</td>
+<td>
+Jean Morrison
+</td>
+<td>
+2023-09-21
+</td>
+<td>
+updates
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/jean997/snakemake_tutorial/blob/8972212f91d460d988b288ce79a8bdec2b2ac6ec/analysis/cluster.Rmd" target="_blank">8972212</a>
 </td>
 <td>
@@ -546,9 +577,11 @@ updates
 the cluster.</p>
 <p>In this section we will:</p>
 <ol style="list-style-type: decimal">
-<li>Learn about cluster related command-line options</li>
-<li>Create a file containing options for submitted jobs</li>
-<li>Learn about local rules</li>
+<li>Use Snakemake with the <code>--slurm</code> option</li>
+<li>Use Snakemake with the <code>--cluster</code> option</li>
+<li>Specify local rules that won’t be submitted as jobs to the
+cluster</li>
+<li>Learn some tips for using Snakemake on the cluster</li>
 </ol>
 </div>
 <div id="submitting-jobs-to-the-cluster-with---slurm"
@@ -562,7 +595,7 @@ how to submit jobs.</p>
 SLURM. As of recent versions of Snakemake, we can simply add
 <code>--slurm</code> to the command line execution.</p>
 <p>On the CSG and Biostatistics clusters, the following line will
-work</p>
+(probably) work</p>
 <pre><code>snakemake --slurm --jobs 10 -p </code></pre>
 <p>The <code>--jobs</code> flag indicates the maximum number of jobs to
 submit at a time. You may want to increase this if you have a larger job
@@ -588,6 +621,95 @@ specifications. For example, using</p>
 <code>combine_data</code> rule. A full listing of the available cluster
 resources can be found in the Snakemake documentation <a
 href="https://snakemake.readthedocs.io/en/stable/executing/cluster.html">here</a>.</p>
+</div>
+</div>
+<div id="submitting-jobs-using---cluster" class="section level2">
+<h2>Submitting Jobs using <code>--cluster</code></h2>
+<p>If you are using a non-SLURM cluster (or you simply want to), you can
+use the <code>--cluster</code> command to specify a generic command for
+submitting jobs to the cluster. In the file
+<code>code/run-snakemake.sh</code> you will find the following
+submission line:</p>
+<pre><code>mkdir -p log
+snakemake \
+   --keep-going \
+   --jobs 96 \
+   --max-jobs-per-second 5 \
+   --latency-wait 60 \
+   --cluster-config cluster.yaml  \
+   --cluster &quot;sbatch \
+              --output={cluster.log}_%j.out \
+              --error={cluster.log}_%j.err \
+              --account=jvmorr0 \
+              --job-name={cluster.name} \
+              --time={cluster.time}  \
+              --cpus-per-task={cluster.cpus}  \
+              --mem={cluster.mem}&quot;</code></pre>
+<p>which uses the <code>--cluster</code> command to specify how to
+submit a job. This line also uses <code>--cluster-config</code> to
+specify a configuration file for cluster jobs. Copy
+<code>code/run-snakemake.sh</code> and <code>code/cluster.yaml</code> to
+your main tutorial directory. The cluster configuration file is an
+alternative way to specify resources for each rule. The placeholders
+<code>{cluster.log}</code> etc in the snakemake command above reference
+values in the <code>cluster.yaml</code> file. Each section of the
+cluster config file specifies rule specific or default resources.</p>
+<pre><code>__default__:
+    mem: &quot;1G&quot;
+    cpus: &quot;1&quot;
+    name: &quot;{rule}-{wildcards}&quot;
+    log: &quot;log/snake-{rule}-{wildcards}&quot;
+    time: &quot;2:00:00&quot;
+
+variant_qc:
+    cpus: &quot;4&quot;
+
+ld_prune:
+    cpus: &quot;4&quot;</code></pre>
+<p>Since the <code>run-snakeamake.sh</code> file contains the snakemake
+call, to run this, we only need to type</p>
+<pre><code>./run-snakemake.sh</code></pre>
+<p>at the command line.</p>
+</div>
+<div id="local-rules" class="section level2">
+<h2>Local Rules</h2>
+<p>Not every rule is a big job. For little jobs, it may be faster to run
+these locally (e.g. on the log in node or whatever node you choose to
+run Snakemake from) than to submit to the cluster. To specify that the
+rules <code>alla</code> and <code>plot_pca</code> should be run locally,
+add the following line to your Snakefile</p>
+<pre><code>localrules: all, plot_pca</code></pre>
+<p>Alternatively, we can add the specification
+<code>localrule: True</code> inside of the rule itself.</p>
+</div>
+<div id="cluster-tips" class="section level2">
+<h2>Cluster Tips</h2>
+<div id="running-snakemake-in-the-background" class="section level3">
+<h3>Running Snakemake in the Background</h3>
+<p>If your workflow is going to take a long time to fully execute, it is
+a good idea to run Snakemake in the background. Running it in the
+background will mean that after you type the Snakemake command, you are
+returned to the command line and can do other things, rather than
+waiting for Snakemake to finish. You can also use a specification so
+that if you are disconnected from the cluster, Snakemake keeps
+running.</p>
+<p>I like to put my Snakemake command into a bash script (like
+<code>run-snakemake.sh</code>) and then run it with the following
+command:</p>
+<pre><code>nohup ./run-snakemake.sh &amp;</code></pre>
+<p>The <code>nohup</code> and <code>&amp;</code> additions to this line
+cause snakemake to run in the background and keep running if the
+terminal is closed.</p>
+</div>
+<div id="running-snakemake-on-a-compute-node" class="section level3">
+<h3>Running Snakemake on a compute node</h3>
+<p>I also prefer to run long-running Snakemake jobs on compute nodes
+rather than the log in node. There are two advantages to doing this. The
+first is that the job is easy to kill. I can simply cancel the session
+that it is running in. The second advantage is that my Snakemake job has
+its own designated resources and isn’t going to use up too many
+resources on the log in node. My personal preferred strategy is to start
+an interactive job inside of a screen session.</p>
 </div>
 </div>
 
