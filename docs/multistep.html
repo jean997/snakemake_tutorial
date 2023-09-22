@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Jean Morrison" />
+
+<meta name="date" content="2023-09-21" />
+
+<title>Multi-Step Workflows</title>
+
+<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Snakemake Tutorial</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Multi-Step Workflows</h1>
+<h4 class="author">Jean Morrison</h4>
+<h4 class="date">2023-09-21</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2023-09-21
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>snakemake_tutorial/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R
+Markdown file created these results, you’ll want to first commit it to
+the Git repo. If you’re still working on the analysis, you can ignore
+this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtreef5e674748fb45efc1af697b86a032c7897274e0btargetblankf5e6747a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/jean997/snakemake_tutorial/tree/f5e674748fb45efc1af697b86a032c7897274e0b" target="_blank">f5e6747</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtreef5e674748fb45efc1af697b86a032c7897274e0btargetblankf5e6747a"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/jean997/snakemake_tutorial/tree/f5e674748fb45efc1af697b86a032c7897274e0b" target="_blank">f5e6747</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  analysis/basics.Rmd
+    Untracked:  analysis/multistep.Rmd
+    Untracked:  analysis/wildcards.Rmd
+
+Unstaged changes:
+    Modified:   analysis/index.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with
+<code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>In this section we will expand our workflow to include multiple
+steps.</p>
+<p>In this section:</p>
+<ol style="list-style-type: decimal">
+<li>Add a rule with multiple inputs</li>
+<li>Add a rule with multiple outputs, use <code>multiext()</code></li>
+<li>Execute a multi-step workflow</li>
+<li>Use Snakemake to draw a DAG to visualize a workflow</li>
+<li>Learn how Snakemake determines what to re-run</li>
+</ol>
+</div>
+<div id="multiple-inputs" class="section level2">
+<h2>Multiple Inputs</h2>
+<p>So far our <code>get_stats</code> rule has one input file and one
+output file. We could have either multiple inputs or multiple outputs.
+These can be specified explicitly, or using utilities like
+<code>expand()</code>. Lets add a rule that uses bcftools to concatonate
+all three chromosomes together.</p>
+<pre><code>rule combine_data:
+    input: chr20 = &quot;data/chr20.vcf.gz&quot;, chr21 = &quot;data/chr21.vcf.gz&quot;, chr22 = &quot;data/chr22.vcf.gz&quot;
+    output: out = &quot;data/all.vcf.gz&quot; 
+    shell: &quot;bcftools concat -o {output.out} {input.chr20} {input.chr21} {input.chr22}&quot;</code></pre>
+<p>Notice that we have named elements in both <code>input</code> and
+<code>output</code> and we can access these elements using a placeholder
+by placing the name after the “.”. We can see that this specification
+might get annoying so fortunately, we can still use the placeholder
+<code>{input}</code> to access the entire list of inputs. We can also
+make use of <code>expand()</code> instead of explicitly writing out all
+of the file names. The rule above is equivalent to</p>
+<pre><code>rule combine_data:
+    input: expand(&quot;data/chr{c}.vcf.gz&quot;, c = range(20, 23))
+    output: &quot;data/all.vcf.gz&quot;
+    shell: &quot;bcftools concat -o {output} {input}&quot;</code></pre>
+<p>If you leave <code>rule all</code> as we had it before, what do you
+think will happen if we run Snakemake?</p>
+</div>
+<div id="multiple-outputs-and-multiext" class="section level2">
+<h2>Multiple Outputs and <code>multiext()</code></h2>
+<p>We can also have multiple outputs. Let’s write a rule that takes in
+the concatonated data and uses Plink2 to perform some basic variant
+quality control steps. This is a good chance to learn about another
+utility that functions like <code>expand()</code>. Plink is going to
+produce a bunch of files that all have the same root and different
+extensions. To indicate this, we can use <code>multiext()</code>.</p>
+<pre><code>rule variant_qc:
+    input: &quot;data/all.vcf.gz&quot;
+    output: multiext(&quot;data/all_varqc&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;, &quot;.log&quot;)
+    shell: &quot;plink2 --vcf {input} --set-missing-var-ids &#39;@:#&#39; --snps-only --var-min-qual 95 --geno 0.1 --maf 0.01 --make-pgen --out data/all_varqc &quot;</code></pre>
+</div>
+<div id="finishing-the-workflow" class="section level2">
+<h2>Finishing the workflow</h2>
+<p>Let’s add two more rules to make a workflow that computes the genetic
+principal components of the 100 individuals in our data. To do this, we
+will use Plink to write out an LD pruned list of variants. Then we will
+use plink to compute the PCs.</p>
+<pre><code>rule ld_prune:
+    input: multiext(&quot;data/{prefix}&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;)
+    output: &quot;data/{prefix}.prune.in&quot;
+    shell: &quot;plink2 --pfile data/{wildcards.prefix} --indep-pairwise 1000kb 0.01 --out data/{wildcards.prefix}&quot;
+
+rule pca:
+    input: data = multiext(&quot;data/{prefix}&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;), prune = &quot;data/{prefix}.prune.in&quot;
+    output: &quot;results/{prefix}.eigenvec&quot;
+    shell: &quot;plink2 --pfile data/{wildcards.prefix} --extract {input.prune} --pca --out results/{wildcards.prefix}&quot;</code></pre>
+<p>Here, we have used the wildcard <code>{prefix}</code> to make our
+rule more generic. Look at the inputs and outputs of these rules and the
+previous rules. What do you expect <code>{prefix}</code> to be?</p>
+<p>Finally, lets add a step that uses R to plot the results. To do this,
+we will use my favorite way to use R with Snakemake. We want an R script
+that we can call at the command line that takes in the PCs and outputs a
+plot. It will help us keep our workflow more generalizeable if we don’t
+have to hard code these file names in the R script, so lets pass them in
+as arguments. Add the rule below to the Snakefile:</p>
+<pre><code>rule plot_pca:
+    input: &quot;results/{prefix}.eigenvec&quot;
+    output: &quot;results/{prefix}_pca.png&quot;
+    shell: &quot;Rscript code/plot_pcs.R {input} {output}&quot;</code></pre>
+<p>This rule makes use of a piece of code that is alread in the
+<code>code/</code> folder which looks like this:</p>
+<pre><code>library(ggplot2)
+library(readr)
+    
+
+args &lt;- commandArgs(trailingOnly = TRUE)
+input &lt;- args[1]
+output &lt;- args[2]
+    
+pcs &lt;- read_table(input)
+my_plot &lt;- ggplot(pcs) + geom_point(aes(x = PC1, y = PC2))
+ggsave(my_plot,  file = output, height = 4, width = 5, units = &quot;in&quot;, dpi = 300)</code></pre>
+<p>The line <code>args &lt;- commandArgs(trailingOnly=TRUE)</code>
+collects the command line arguments into a variable that we can access
+in R.</p>
+<p>Set the input in <code>rule all</code> to the value that you think
+will execute the PCA workflow. Test your code by running a dry run and
+then execute it! Remember to add the <code>-j 1 -c 1</code> flags when
+you execute for real.</p>
+</div>
+<div id="visualizing-the-dag-of-jobs" class="section level2">
+<h2>Visualizing the DAG of jobs</h2>
+<p>To get to know our workflow better, we can use Snakemake to produce a
+visual representation of it. To create a png file, use</p>
+<pre><code>snakemake --dag  | dot -Tpng &gt; dag.png</code></pre>
+<p>Open the file (or move the file to your local computer and then open
+it). You should see something like this</p>
+<div class="float">
+<img src="step4.png" alt="DAG of workflow" />
+<div class="figcaption">DAG of workflow</div>
+</div>
+<p>Boxes with dashed lines indicate steps that won’t be run if Snakemake
+were run now and solid lines indicate steps that need to be re-run.</p>
+</div>
+<div id="when-rules-are-re-run" class="section level2">
+<h2>When Rules are Re-Run</h2>
+<p>By default, Snakemake is lazy (efficient) and does not want to re-do
+work that has already been done. After determining the target file and
+the series of steps, Snakemake will check the time stamps of the
+intermediate products and compare these to each other and the code. If
+the code hasn’t been modified since files were produced, and not
+pre-cursors have been changed since files lower down the workflow were
+created, then there is nothing to do.</p>
+<p>One way to trigger a re-run is to modify an upstream file (or to
+simply update it’s time stamp). To see this use</p>
+<pre><code>touch data/all_varqc.pgen</code></pre>
+<p>This will update the time stamp of <code>data/all_varqc.pgen</code>
+to now. If you re-ran Snakemake, which steps do you think it would try
+to repeat? Check your answer by running a dry-run. However, removing an
+intermediate file will not trigger a re-run.</p>
+<p>Another way to trigger a re-run is to modify the content of the rule
+in the Snakefile. Note that this does not extend to the content of the
+scripts called by the rules. So if we modify
+<code>code/plot_pcs.R</code>, Snakemake will not know that it needs to
+re-run the plotting step.</p>
+<p>There are several command line options that control how Snakemake
+decides what to re-run. The option <code>-F</code> (for force) forces
+Snakemake to re-run everything. Usually, this is overkill and you don’t
+want to do this. The <code>-R</code> option can be used to tell
+Snakemake to re-run everything from a given rule forward. For
+example,</p>
+<pre><code>snakemake -j 1 -c 1 -R pca</code></pre>
+<p>will re-run the <code>pca</code> rule and the <code>plot_pca</code>
+rule. Finally the <code>--rerun-triggers</code> command line option can
+be used to modify the behavior of what should be re-run when. For more
+details on this option, check the Snakemake documentation (this is a bit
+beyond this tutorial).</p>
+</div>
+<div id="final-snakefile" class="section level2">
+<h2>Final Snakefile</h2>
+<p>At the end of this section, your Snakefile should look like this:</p>
+<pre><code>rule all:
+    input: &quot;results/all_varqc_pca.png&quot; 
+
+rule get_stats:
+    input: &quot;data/chr{c}.vcf.gz&quot;
+    output: &quot;results/chr{c}_stats.txt&quot;
+    shell: &quot;mkdir -p results; bcftools stats {input} &gt; {output}&quot;
+
+rule combine_data:
+    input: expand(&quot;data/chr{c}.vcf.gz&quot;, c = range(20, 23))
+    output: &quot;data/all.vcf.gz&quot;
+    shell: &quot;bcftools concat -o {output} {input}&quot;
+
+rule variant_qc:
+    input: &quot;data/all.vcf.gz&quot;
+    output: multiext(&quot;data/all_varqc&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;, &quot;.log&quot;)
+    shell: &quot;plink2 --vcf {input} --set-missing-var-ids &#39;@:#&#39; --snps-only --var-min-qual 95 --geno 0.1 --maf 0.01 --make-pgen --out data/all_varqc &quot;
+
+
+rule ld_prune:
+    input: multiext(&quot;data/{prefix}&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;)
+    output: &quot;data/{prefix}.prune.in&quot;
+    shell: &quot;plink2 --pfile data/{wildcards.prefix} --indep-pairwise 1000kb 0.01 --out data/{wildcards.prefix}&quot;
+
+rule pca:
+    input: data = multiext(&quot;data/{prefix}&quot;, &quot;.pgen&quot;, &quot;.psam&quot;, &quot;.pvar&quot;), prune = &quot;data/{prefix}.prune.in&quot;
+    output: &quot;results/{prefix}.eigenvec&quot;
+    shell: &quot;plink2 --pfile data/{wildcards.prefix} --extract {input.prune} --pca --out results/{wildcards.prefix}&quot;
+
+rule plot_pca:
+    input: &quot;results/{prefix}.eigenvec&quot;
+    output: &quot;results/{prefix}_pca.png&quot;
+    shell: &quot;Rscript code/plot_pcs.R {input} {output}&quot;</code></pre>
+<p>This code is in <code>code/3.Snakefile</code></p>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

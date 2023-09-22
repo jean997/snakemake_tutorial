@@ -37,5 +37,10 @@ In this tutorial, I will assume that you are using a computer with either a Linu
 ## Tutorial
 
 0. [Installation and Set-Up](install.html)
-
-
+1. [Introduction](introduction.html)
+2. [Using Snakemake to Execute Commands](basics.html)
+3. [Wildcards, Placeholders, and expand()](wildcards.html)
+4. [Multistep Workflows](multistep.html)
+5. [Params and Config Files](config.html)
+6. [Running on the Cluster](cluster.html)
+7. [Using Conda with Snakemake](conda.html)

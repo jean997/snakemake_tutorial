@@ -1,0 +1,110 @@
+---
+title: "Parameters and Config Files"
+author: "Jean Morrison"
+date: "2023-09-21"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+In this section we will learn about the `params:` field for rules  how to pass options to Snakemake using a config file.
+
+In this Section:
+
+1. Modify a rule to use `params:`
+2. Write and use a config file in our workflow
+
+## Params
+
+In our previous workflow, two of our steps, `variant_qc` and `ld_prune` include parameters
+that we hard coded into the command on the `shell:` line. We could hav also passed these in using the `params:` field and placeholders. 
+
+For example, we could use
+
+```
+rule variant_qc:
+    input: "data/all.vcf.gz"
+    output: multiext("data/all_varqc", ".pgen", ".psam", ".pvar", ".log")
+    params: geno_thresh = 0.1, qual_thresh = 95, maf = 0.01
+    shell: """
+           plink2 --vcf {input} --set-missing-var-ids '@:#' --snps-only \
+                 --var-min-qual {params.qual_thresh} \
+                 --geno {params.geno_thresh} \
+                 --maf {params.maf} \
+                 --make-pgen \
+                 --out data/all_varqc 
+          """
+          
+rule ld_prune:
+    input: multiext("data/{prefix}", ".pgen", ".psam", ".pvar")
+    output: "data/{prefix}.prune.in"
+    params: kb = "1000kb", r2 = 0.01
+    shell: """
+          plink2 --pfile data/{wildcards.prefix} \
+          --indep-pairwise {params.kb} {params.r2} \
+          --out data/{wildcards.prefix}
+          """
+
+```
+
+Notice that we are now using triple quotes on the shell line. This allows us to have line breaks inside of the command which makes for easier reading. 
+
+
+## Config Files
+
+Putting the parameters on the `params:` line makes for easier reading but doesn't really add much flexibility. The parameters are still hard coded into the Snakefile. Often the utility of the `params:` field comes from combining it with a configuration file. This is especially useful if you want to distribute your workflow to others. It is a lot easier to tell someone how to change a configuration file than to tell them how to edit your Snakefile. 
+
+Lets create a configuration file that contains the variant QC parameters and the LD pruning parameters. The config file will be a yaml file ("yet another markup language") which is a nice, human readable way to specify information. Create a file in your tutorial directory called `config.yaml` (or any other name you prefer) and put this content in it:
+
+```
+QC:
+    geno_thresh: 0.1
+    qual_thresh: 95
+    maf: 0.01
+LD: 
+    kb: "1000kb"
+    r2: 0.01
+```
+
+Each line of the yaml file begins with a label followed by a colon. You can have as many sub-levels as you want, indicated by tabs. 
+
+Now we need to tell Snakemake where to find the configuration file. Add this line to the top of your Snakefile
+
+```
+configfile: "config.yaml"
+```
+
+Finally, we need to access the values in the config file. We can do this with nested brackets, so `config["QC"]["geno_thresh"]` indicates the content of the `geno_thresh:` line. 
+
+Modify the `params:` lines of the `variant_qc` and `ld_prune` rules. These rules should now read
+
+```
+rule variant_qc:
+    input: "data/all.vcf.gz"
+    output: multiext("data/all_varqc", ".pgen", ".psam", ".pvar", ".log")
+    params: geno_thresh = config["QC"]["geno_thresh"], 
+            qual_thresh = config["QC"]["qual_thresh"], 
+            maf = config["QC"]["maf"]
+    shell: """
+           plink2 --vcf {input} --set-missing-var-ids '@:#' --snps-only \
+                 --var-min-qual {params.qual_thresh} \
+                 --geno {params.geno_thresh} \
+                 --maf {params.maf} \
+                 --make-pgen \
+                 --out data/all_varqc 
+          """
+
+rule ld_prune:
+    input: multiext("data/{prefix}", ".pgen", ".psam", ".pvar")
+    output: "data/{prefix}.prune.in"
+    params: kb = config["LD"]["kb"], r2 = config["LD"]["r2"]
+    shell: """
+          plink2 --pfile data/{wildcards.prefix} \
+          --indep-pairwise {params.kb} {params.r2} \
+          --out data/{wildcards.prefix}
+          """
+```
+
+**Special Challenge**: Modify the `maf` line of the config file to give a list, like `[0.01, 0.05]`. Can you modify the pipeline so that two sets of pca results are produced, one using each of the values given to the `maf` line in the config file? An answer is in `code/7.Snakefile` and `code/7.config.yaml`. 

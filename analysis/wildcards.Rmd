@@ -1,0 +1,133 @@
+---
+title: "Wildcards, placeholders, and expand()"
+author: "Jean Morrison"
+date: "2023-09-21"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+In this section we will learn to make more generic rules using wildcards, and placeholders. We will also learn about the `expand()` utility.
+
+In this Section: 
+
+1. Use `expand()` to simplify our `rule all`
+2. Use wildcards to make a generic rule to run bcftools.
+3. Use placeholders to simplify our rule.
+
+
+## `expand()`
+
+At the end of the last section, our target rule looked like this:
+
+```
+rule all:
+    input: "results/chr21_stats.txt", "results/chr22_stats.txt"
+```
+
+You might imagine that if we wanted to generate statistics for all 22 chromosomes, this line would get long and difficult to read. To solve this problem, we can use `expand()`. The line
+
+```
+expand("results/chr{c}_stats.txt", c = ["21", "22"])
+```
+
+indicates the list of strings `["results/chr21_stats.txt", "results/chr22_stats.txt"]`. This is equivalent to 
+
+```
+expand("results/chr{c}_stats.txt", c = range(21, 23))
+```
+which is a little more convenient. 
+We could also have multiple keys in `expand()`. For example, 
+
+```
+expand({sample}_{time}.txt, sample = ["HG00096", "HG00097", "HG00099"], time = [1, 2] )
+```
+will expand to `['HG00096_1.txt', 'HG00096_2.txt', 'HG00097_1.txt', 'HG00097_2.txt', 'HG00099_1.txt', 'HG00099_2.txt']`.
+
+Use `expand()` to modify the `all` rule. Change this rule so that it also requests the file `"results/chr201_stats.txt"`. Run 
+
+```
+snakemake -n -p
+```
+
+You should see an error
+
+```
+Missing input files for rule all:
+    affected files:
+        results/chr20_stats.txt
+```
+This occurs because the file for chromosome 20 doesn't exist and there are no rules telling Snakemake how to create it.
+
+## Wildcards
+
+So far, we have written two different rules to produce `"results/chr21_stats.txt"` and `"results/chr22_stats.txt"`. We could write a third rule for chromosome 20 but this isn't very efficient. Instead, we can use a wildcard to write a generic rule. The wildcard is the part of the rule we want to be able to substitute out, in this case the chromosome number. 
+
+Remove the rules `get_stats22` and `get_stats21` from your Snakefile and add the rule
+
+```
+rule get_stats:
+    input: "data/chr{c}.vcf.gz"
+    output: "results/chr{c}_stats.txt"
+    shell: "mkdir -p results; bcftools stats data/chr{wildcards.c}.vcf.gz > results/chr{wildcards.c}_stats.txt"
+```
+
+In this rule `{c}` is a wildcard. To access the value of the wildcard in the `shell` line, we need to use `{wildcards.c}`. You could use anything here. For example, this is equivalent to 
+
+```
+rule get_stats:
+    input: "data/chr{chromosome}.vcf.gz"
+    output: "results/chr{chromosome}_stats.txt"
+    shell: "mkdir -p results; bcftools stats data/chr{wildcards.chromosome}.vcf.gz > results/chr{wildcards.chromosome}_stats.txt"
+```
+
+Re-run the dry-run command
+
+```
+snakemake -n -p
+```
+and see that you no longer get an error. Scroll through the output and see how Snakemake has filled in the value of the wildcard according to its needs.
+
+Finally, modify the `rule all` to additionally request a file for chromosome 19 using `expand("results/chr{c}_stats.txt", c = range(19, 23))`. What do you think will happen?
+
+We get another error but now the error says 
+
+```
+Missing input files for rule get_stats:
+    output: results/chr19_stats.txt
+    wildcards: c=19
+    affected files:
+        data/chr19.vcf.gz
+```
+
+The problem now is not that there are no rules to make the desired target file. Snakemake can use wildcards to make the target using the rule `get_stats`. However, `get_stats` requires an input that isn't present and that isn't produced by any rules so we get an error.
+
+
+## Placeholders
+
+Curly braces can also be used to indicate placeholders for parameters given to a rule. So far, we only have `input:` and `output:` given before the `shell:` line. `{input}` and `{output}` will evaluate to the values in the `input:` and `output:` lines. So we can simplify our `get_stats` rule to
+
+```
+rule get_stats:
+    input: "data/chr{chromosome}.vcf.gz"
+    output: "results/chr{chromosome}_stats.txt"
+    shell: "mkdir -p results; bcftools stats {input} > {output}"
+```
+
+## Final Snakefile
+
+At the end of this section, your Snakefile should look like this 
+
+```
+rule all:
+    input: expand("results/chr{c}_stats.txt", c = range(20, 23))
+
+rule get_stats:
+    input: "data/chr{c}.vcf.gz"
+    output: "results/chr{c}_stats.txt"
+    shell: "mkdir -p results; bcftools stats {input} > {output}"
+```
+
+You can find this file in `code/2.Snakefile`

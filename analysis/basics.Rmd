@@ -1,0 +1,229 @@
+---
+title: "Using Snakemake to Execute Commands"
+author: "Jean Morrison"
+date: "2023-09-21"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+In this section, we will learn how to use Snakemake to execute commands.
+
+Goals for this session:
+
+1. Use bcftools to summarize a vcf files
+2. Write a Snakemake rule to run the bcftools command
+3. Run Snakemake on the command line
+4. Learn how to specify target files
+
+## Data
+
+Inside the `data/` folder you will see three files. 
+
+```
+ls data/
+chr20.vcf.gz  chr21.vcf.gz  chr22.vcf.gz
+```
+
+These are vcf files which contain genotype information for 100 people from 1000 Genomes phase 3. As you might guess from the file names, each file corresponds to one chromosome for chromosomes 20, 21, and 22. We can use bcftools to summarize the contents of these files. The command below will generate some summaries and write them to a file. Run this command in your tutorial directory. 
+
+```
+bcftools stats data/chr22.vcf.gz > chr22_stats.txt
+```
+
+If we take a look at this file, we find out that `data/chr22.vcf.gz` contains 100 samples and about a million variants. We also have lots of other information but this isn't that important for our purposes.
+
+## Using Snakemake to run bcftools
+
+### Writing the Rule
+
+We now want to write a rule so that Snakemake could execute this command for us. The input for the rule is the data file and the output is the file `chr22_stats.txt`. Create a new file in your tutorial directory called `Snakefile` and open it. I like to use Vim so I would type `vim Snakefile`. If you are using `nano`, you could type `nano Snakefile`.  If you are on the GreatLakes web interface, click on "+ New File" and then click on Edit in the dropdown menu. Put the text below into your file and then save and exit.
+
+```
+rule get_stats22:
+    input: "data/chr22.vcf.gz"
+    output: "results/chr22_stats.txt"
+    shell: "mkdir -p results; bcftools stats data/chr22.vcf.gz > results/chr22_stats.txt"
+```
+
+This rule lists the input, output, and action (`shell`) for the process of using bcftools to summarize the vcf file. Our rule differs slightly from the command we used in the previous section because it puts the output into a directory called `results/`. 
+
+**Workflow Tip:** Organize the files in your workflow into subdirectories. I like to keep the Snakefile and sometimes a few helper files at the top level. Generally, I like to have sub-directories called `code` where I put scripts (could be called `R` or `scripts` etc), `data/`, and `results/`. You can choose a different organizational scheme that works for you but it is nice to have a system. 
+
+### Running Snakemake
+
+Activate the snakemake conda environment by typing 
+
+```
+conda activate snakemake
+```
+
+Now we are ready to run Snakemake for the first time. Type
+
+```
+snakemake -j 1 -c 1 -p 
+```
+
+The `-j 1` and `-c 1` flags tell Snakemake to run one job at a time and to use one core. The `-p` flag tells Snakemake to print out the shell commands it will use before it runs them. We don't need to tell it anything else because we named our Snakefile `Snakefile` which is the default name that Snakemake will look for. We could have named it anything else but then we would need to use the `-s` flag to let Snakemake know what it is called. For example, if you named it `my_first_snakefile`, you could use the command
+
+```
+snakemake -j 1 -c 1 -p -s my_first_snakefile
+```
+
+### What Just Happened
+
+The output you get from the previous command should look like 
+
+```
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job            count    min threads    max threads
+-----------  -------  -------------  -------------
+get_stats22        1              1              1
+total              1              1              1
+
+Select jobs to execute...
+
+[Thu Sep 21 16:52:56 2023]
+rule get_stats22:
+    input: data/chr22.vcf.gz
+    output: results/chr22_stats.txt
+    jobid: 0
+    reason: Missing output files: results/chr22_stats.txt
+    resources: tmpdir=/tmp
+
+mkdir -p results; bcftools stats data/chr22.vcf.gz > results/chr22_stats.txt
+[Thu Sep 21 16:53:00 2023]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: .snakemake/log/2023-09-21T165255.457024.snakemake.log
+```
+
+In this output, Snakemake is telling us what is happening. First, it identifies a target file and then uses our rules to build a DAG of jobs to create that file. In our case, it identifies `results/chr22_stats.txt` as the target file (more on why it chose this coming) and then identifies that it needs to execute one rule to create this file. It then executes the necessary rule and writes some inforamtion to a log file.  
+
+
+### Dry Run Mode (`-n`)
+
+A very useful command line option for Snakemake is `-n`. This option will cause Snakemake to only do the first steps of identifying the target, building the DAG, and making the plan of jobs to execute without actually executing any of the jobs. I almost always run Snakemake with `-n` before running it "for real" because this can help me see that Snakemake is going to do what I thought it would do. Let's try this now.
+
+```
+snakemake -n -p
+```
+
+We can omit the `-j 1 -c 1` options because these only relate to job execution. You should see
+
+```
+Building DAG of jobs...
+Nothing to be done (all requested files are present and up to date).
+```
+
+Snakemake says there is nothing to do because the target file already exists and the code hasn't changed since the last time the target file was created. We will talk more about when Snakemake will re-run a rule in future sections. For now, delete `results/chr22_stats.txt` and re-run the dry-run command above. You should now see different output indicating that Snakemake will run the rule again. 
+
+### Targets
+
+In our file, we didn't explicitly tell Snakemake what file to create, it just guessed. You might imagine that in a more complicated workflow, we will probably need to be explicit about what we want. Snakemake has a hierarchy of places it will look to decide what the target is. To see this in action, lets add a second rule to our Snakefile.
+
+```
+rule get_stats21:
+    input: "data/chr21.vcf.gz"
+    output: "results/chr21_stats.txt"
+    shell: "mkdir -p results; bcftools stats data/chr21.vcf.gz > results/chr21_stats.txt"
+```
+
+**Hierarchy for Determining Target File(s):**
+
+1. Command line designation. Target files can be specified at the end of the `snakemake` command. 
+2. Rules designated as `default_target`.
+4. The first rule in the file.
+
+From this hierarchy, if we don't make any further changes to the Snakefile and run the command
+```
+snakemake -n -p
+```
+which file do you think will be the target file? Check your answer by running a dry-run. 
+
+#### Specifying targets at the command line
+
+The command
+
+```
+snakemake -n -p results/chr21_stats.txt
+```
+
+specifies the target files `results/chr21_stats.txt`. We could also have multiple target files such as
+
+```
+snakemake -n -p results/chr22_stats.txt results/chr21_stats.txt
+```
+
+Instead of using the file name, we could also use the name of the rule. Using
+```
+snakemake -n -p get_stats21
+```
+indicates that our target file is the output of the rule `get_stats21`.
+This specification will take precedence over any other way of indicating the target.
+
+Try running
+
+```
+snakemake -n -p results/chr19_stats.txt
+```
+What happens?
+
+#### Specifying `default_target`
+
+Any rule can be a target rule as long as that rule does not contain any wildcards (we will learn about these next). To indicate that a rule is a target add the line `default_target: True` to the rule before the `shell:` line. For example, modify the `get_stats21` rule to read
+
+```
+rule get_stats21:
+    input: "data/chr21.vcf.gz"
+    output: "results/chr21_stats.txt"
+    default_target: True
+    shell: "mkdir -p results; bcftools stats data/chr21.vcf.gz > results/chr21_stats.txt"
+```
+
+If you run
+
+```
+snakemake -n -p
+```
+
+You should see that `results/chr21_stats.txt` is the target. 
+
+I believe that if multiple rules are specified with `default_target: True`, Snakemake will pick the last one. You should not do this as it will make your workflow confusing.
+
+#### Using the First Rule
+
+The most common way to use Snakemake is to allow it to execute the first rule as the default. Often, this rule is treated specially and given the name `all`. The `all` rule has an input but no output or shell line. Add these lines **to the top** of your Snakefile and remove any designations of `default_target: True` that you added in the previous section.
+
+```
+rule all:
+    input: results/chr22_stats.txt, results/chr21_stats.txt
+```
+
+This will make the files listed in `input` for rule `all` the target files. 
+
+
+## Final Snakefile
+
+At the end of this section, you Snakefile should look like the file in `code/1.Snakefile`
+
+```
+rule all:
+    input: "results/chr21_stats.txt", "results/chr22_stats.txt"
+
+rule get_stats22:
+    input: "data/chr22.vcf.gz"
+    output: "results/chr22_stats.txt"
+    shell: "mkdir -p results; bcftools stats data/chr22.vcf.gz > results/chr22_stats.txt"
+
+rule get_stats21:
+    input: "data/chr21.vcf.gz"
+    output: "results/chr21_stats.txt"
+    shell: "mkdir -p results; bcftools stats data/chr21.vcf.gz > results/chr21_stats.txt"
+```
