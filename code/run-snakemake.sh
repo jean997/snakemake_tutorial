@@ -2,7 +2,6 @@
 
 mkdir -p log
 snakemake \
-   -s 8.Snakefile \
    --keep-going \
    --jobs 96 \
    --max-jobs-per-second 5 \

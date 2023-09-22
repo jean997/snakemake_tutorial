@@ -13,9 +13,11 @@ In this section, we will learn how to use Snakemake to submit jobs to the cluste
 
 In this section we will:
 
-1. Learn about cluster related command-line options
-2. Create a file containing options for submitted jobs
-3. Learn about local rules
+1. Use Snakemake with the `--slurm` option
+2. Use Snakemake with the `--cluster` option
+3. Specify local rules that won't be submitted as jobs to the cluster
+3. Learn some tips for using Snakemake on the cluster
+
 
 ## Submitting Jobs to the Cluster with `--slurm`
 
@@ -23,7 +25,7 @@ A big advantage of using Snakemake is that it can take care of submitting lots o
 
 All three of the Biostatistics, CSG, and GreatLakes clusters use SLURM. As of recent versions of Snakemake, we can simply add `--slurm` to the command line execution. 
 
-On the CSG and Biostatistics clusters, the following line will work
+On the CSG and Biostatistics clusters, the following line will (probably) work
 
 ```
 snakemake --slurm --jobs 10 -p 
@@ -49,3 +51,79 @@ rule combine_data:
     shell: "bcftools concat -o {output} {input}"
 ```
 specifies 1Gb of memory to be allocated for the `combine_data` rule. A full listing of the available cluster resources can be found in the Snakemake documentation [here](https://snakemake.readthedocs.io/en/stable/executing/cluster.html).
+
+## Submitting Jobs using `--cluster`
+
+If you are using a non-SLURM cluster (or you simply want to), you can use the `--cluster` command to specify a generic command for submitting jobs to the cluster. In the file `code/run-snakemake.sh` you will find the following submission line:
+
+```
+mkdir -p log
+snakemake \
+   --keep-going \
+   --jobs 96 \
+   --max-jobs-per-second 5 \
+   --latency-wait 60 \
+   --cluster-config cluster.yaml  \
+   --cluster "sbatch \
+              --output={cluster.log}_%j.out \
+              --error={cluster.log}_%j.err \
+              --account=jvmorr0 \
+              --job-name={cluster.name} \
+              --time={cluster.time}  \
+              --cpus-per-task={cluster.cpus}  \
+              --mem={cluster.mem}"
+```
+
+which uses the `--cluster` command to specify how to submit a job. This line also uses `--cluster-config` to specify a configuration file for cluster jobs. Copy `code/run-snakemake.sh` and `code/cluster.yaml` to your main tutorial directory. The cluster configuration file is an alternative way to specify resources for each rule. The placeholders `{cluster.log}` etc in the snakemake command above reference values in the `cluster.yaml` file. Each section of the cluster config file specifies rule specific or default resources. 
+
+```
+__default__:
+    mem: "1G"
+    cpus: "1"
+    name: "{rule}-{wildcards}"
+    log: "log/snake-{rule}-{wildcards}"
+    time: "2:00:00"
+
+variant_qc:
+    cpus: "4"
+
+ld_prune:
+    cpus: "4"
+```
+
+Since the `run-snakeamake.sh` file contains the snakemake call, to run this, we only need to type 
+
+```
+./run-snakemake.sh
+```
+
+at the command line. 
+
+## Local Rules 
+
+Not every rule is a big job. For little jobs, it may be faster to run these locally (e.g. on the log in node or whatever node you choose to run Snakemake from) than to submit to the cluster. To specify that the rules `alla` and `plot_pca` should be run locally, add the following line to your Snakefile
+
+```
+localrules: all, plot_pca
+```
+
+Alternatively, we can add the specification `localrule: True` inside of the rule itself.
+
+
+## Cluster Tips
+
+### Running Snakemake in the Background
+
+If your workflow is going to take a long time to fully execute, it is a good idea to run Snakemake in the background. Running it in the background will mean that after you type the Snakemake command, you are returned to the command line and can do other things, rather than waiting for Snakemake to finish. You can also use a specification so that if you are disconnected from the cluster, Snakemake keeps running. 
+
+I like to put my Snakemake command into a bash script (like `run-snakemake.sh`) and then run it with the following command:
+
+```
+nohup ./run-snakemake.sh &
+```
+
+The `nohup` and `&` additions to this line cause snakemake to run in the background and keep running if the terminal is closed.
+
+### Running Snakemake on a compute node
+
+I also prefer to run long-running Snakemake jobs on compute nodes rather than the log in node. There are two advantages to doing this. The first is that the job is easy to kill. I can simply cancel the session that it is running in. The second advantage is that my Snakemake job has its own designated resources and isn't going to use up too many resources on the log in node. My personal preferred strategy is to start an interactive job inside of a screen session. 

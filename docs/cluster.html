@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Jean Morrison" />
 
+<meta name="date" content="2023-09-21" />
 
-<title>Snakemake for Biostatistics Quick-Start Tutorial</title>
+<title>Using Snakemake to Submit Jobs to the Cluster</title>
 
 <script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +31,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -236,6 +241,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -243,6 +311,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -277,8 +355,10 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Snakemake for Biostatistics Quick-Start
-Tutorial</h1>
+<h1 class="title toc-ignore">Using Snakemake to Submit Jobs to the
+Cluster</h1>
+<h4 class="author">Jean Morrison</h4>
+<h4 class="date">2023-09-21</h4>
 
 </div>
 
@@ -391,8 +471,6 @@ Ignored files:
 
 Unstaged changes:
     Deleted:    data/chr20.vcf.gz
-    Deleted:    data/chr21.vcf.gz
-    Deleted:    data/chr22.vcf.gz
 
 </code></pre>
 <p>
@@ -410,10 +488,11 @@ have uncommitted changes.
 
 <p>
 These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML
-(<code>docs/index.html</code>) files. If you’ve configured a remote Git
-repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
-in the table below to view the files as they were in that past version.
+made to the R Markdown (<code>analysis/cluster.Rmd</code>) and HTML
+(<code>docs/cluster.html</code>) files. If you’ve configured a remote
+Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -439,10 +518,10 @@ Message
 <tbody>
 <tr>
 <td>
-html
+Rmd
 </td>
 <td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/8972212f91d460d988b288ce79a8bdec2b2ac6ec/docs/index.html" target="_blank">8972212</a>
+<a href="https://github.com/jean997/snakemake_tutorial/blob/8972212f91d460d988b288ce79a8bdec2b2ac6ec/analysis/cluster.Rmd" target="_blank">8972212</a>
 </td>
 <td>
 Jean Morrison
@@ -454,295 +533,6 @@ Jean Morrison
 updates
 </td>
 </tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jean997/snakemake_tutorial/blob/656c8b498acf8a5b8b85dc977576aa4c42ff2e34/analysis/index.Rmd" target="_blank">656c8b4</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-add new content
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/656c8b498acf8a5b8b85dc977576aa4c42ff2e34/docs/index.html" target="_blank">656c8b4</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-add new content
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/f5e674748fb45efc1af697b86a032c7897274e0b/docs/index.html" target="_blank">f5e6747</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jean997/snakemake_tutorial/blob/f2a88f81b5b40827d436b244bec63436aeded885/analysis/index.Rmd" target="_blank">f2a88f8</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-wflow_publish(c("analysis/index.Rmd"))
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/bd1284567d64550c555671ae288dbbd9d82cd914/docs/index.html" target="_blank">bd12845</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jean997/snakemake_tutorial/blob/eb6e9c4c6b840db31c33c0ce79cd05352e14c22e/analysis/index.Rmd" target="_blank">eb6e9c4</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-wflow_publish(c("analysis/index.Rmd", "analysis/install.Rmd"))
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/5e764d57a9a33da51a039c3bfeff8f8d48eecf70/docs/index.html" target="_blank">5e764d5</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/8f3e1ea3568bb5170be5b01c61938afb9f3f0451/docs/index.html" target="_blank">8f3e1ea</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-rebuild
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/77167f23b25e2e1b69ef1d5bf26b710cda863ebe/docs/index.html" target="_blank">77167f2</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jean997/snakemake_tutorial/blob/1939b863021964f82ca1f01092199b45b4700cc8/analysis/index.Rmd" target="_blank">1939b86</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-add code and update site
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/1939b863021964f82ca1f01092199b45b4700cc8/docs/index.html" target="_blank">1939b86</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-add code and update site
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/5757821321cb6038403acd5d696702d506b3b0fc/docs/index.html" target="_blank">5757821</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-build site
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jean997/snakemake_tutorial/blob/7957b05a6c8c35612663aa612bb89ade2e53c224/analysis/index.Rmd" target="_blank">7957b05</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-add installation instructions
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/7957b05a6c8c35612663aa612bb89ade2e53c224/docs/index.html" target="_blank">7957b05</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-21
-</td>
-<td>
-add installation instructions
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jean997/snakemake_tutorial/blob/a32ee26ee515fe62df029d06d82ec83f3b9512d8/analysis/index.Rmd" target="_blank">a32ee26</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-20
-</td>
-<td>
-first commit
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/a32ee26ee515fe62df029d06d82ec83f3b9512d8/docs/index.html" target="_blank">a32ee26</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-20
-</td>
-<td>
-first commit
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/jean997/snakemake_tutorial/blob/fe3eed9e337005e3307b425981c89ccede3e61f6/analysis/index.Rmd" target="_blank">fe3eed9</a>
-</td>
-<td>
-Jean Morrison
-</td>
-<td>
-2023-09-20
-</td>
-<td>
-Start workflowr project.
-</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -752,61 +542,53 @@ Start workflowr project.
 </div>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>This website contains a short introduction to Snakemake intended for
-a biostatistics/statistical genetics audience. This tutorial is intended
-to be a “quick start”. We should be able to cover this material in about
-an hour. With the material in this tutorial, you will be able to write a
-basic Snakemake pipeline and execute it either locally or on a
-cluster.</p>
-<p>Due to time constraints, there is lots of material that we won’t
-cover in this guide. Once you are started, there are several excellent
-resources for learning more.</p>
-<p>This website was created for a tutorial given at the University of
-Michigan, so some instructions specifically reference U of M computing
-resources.</p>
+<p>In this section, we will learn how to use Snakemake to submit jobs to
+the cluster.</p>
+<p>In this section we will:</p>
+<ol style="list-style-type: decimal">
+<li>Learn about cluster related command-line options</li>
+<li>Create a file containing options for submitted jobs</li>
+<li>Learn about local rules</li>
+</ol>
+</div>
+<div id="submitting-jobs-to-the-cluster-with---slurm"
+class="section level2">
+<h2>Submitting Jobs to the Cluster with <code>--slurm</code></h2>
+<p>A big advantage of using Snakemake is that it can take care of
+submitting lots of jobs to the cluster, leaving you free time to do more
+interesting tasks. In order for Snakemake to do this, we need to tell it
+how to submit jobs.</p>
+<p>All three of the Biostatistics, CSG, and GreatLakes clusters use
+SLURM. As of recent versions of Snakemake, we can simply add
+<code>--slurm</code> to the command line execution.</p>
+<p>On the CSG and Biostatistics clusters, the following line will
+work</p>
+<pre><code>snakemake --slurm --jobs 10 -p </code></pre>
+<p>The <code>--jobs</code> flag indicates the maximum number of jobs to
+submit at a time. You may want to increase this if you have a larger job
+underway.</p>
+<p>On GreatLakes you will (probably) also need to specify the account
+you are using.</p>
+<pre><code>snakemake --slurm --jobs 10 --default-resources slurm_account=&lt;your SLURM account&gt;</code></pre>
 <div id="resources" class="section level3">
 <h3>Resources</h3>
-<p>Snakemake resources:</p>
-<ul>
-<li><a href="https://snakemake.readthedocs.io/en/stable/">Snakemake
-Documentation</a></li>
-<li><a
-href="https://carpentries-incubator.github.io/snakemake-novice-bioinformatics/">Snakemake
-for Bioinformatics Software Carpentry Course</a></li>
-</ul>
-<p>Other resources:</p>
-<ul>
-<li><a href="https://www.python.org/about/gettingstarted/">Getting
-Started with Python Wiki</a></li>
-<li><a href="https://arc.umich.edu/greatlakes/user-guide/">ARC-TS User
-Guide for GreatLakes</a></li>
-<li><a href="https://swcarpentry.github.io/shell-novice/">Introduction
-to Unix shell</a></li>
-</ul>
+<p>Every job that gets submitted to the cluster is allocated resources
+such as memory, time, and number of cores. These can be specified either
+as defaults used for every job using <code>--default-resources</code> as
+shown above for specifying the slurm account or they can be specified
+differently for each rule. To specify resources for a specific rule, add
+a line <code>resources:</code> to that rule with the desired
+specifications. For example, using</p>
+<pre><code>rule combine_data:
+    input: expand(&quot;data/chr{c}.vcf.gz&quot;, c = range(20, 23))
+    output: &quot;data/all.vcf.gz&quot;
+    resources: mem_mb = 1000
+    shell: &quot;bcftools concat -o {output} {input}&quot;</code></pre>
+<p>specifies 1Gb of memory to be allocated for the
+<code>combine_data</code> rule. A full listing of the available cluster
+resources can be found in the Snakemake documentation <a
+href="https://snakemake.readthedocs.io/en/stable/executing/cluster.html">here</a>.</p>
 </div>
-<div id="pre-requisites" class="section level3">
-<h3>Pre-Requisites</h3>
-<p>In this tutorial, I will assume that you are using a computer with
-either a Linux or Mac operating system. If your personal computer runs
-Windows, I recommend doing this tutorial on one of the clusters
-available to you (e.g. the Biostatistics department cluster, the CSG
-cluster, or Great Lakes). It is possible to run Snakemake on Windows,
-but I do not have very much experience with this.</p>
-</div>
-</div>
-<div id="tutorial" class="section level2">
-<h2>Tutorial</h2>
-<ol start="0" style="list-style-type: decimal">
-<li><a href="install.html">Installation and Set-Up</a></li>
-<li><a href="introduction.html">Introduction</a></li>
-<li><a href="basics.html">Using Snakemake to Execute Commands</a></li>
-<li><a href="wildcards.html">Wildcards, Placeholders, and
-expand()</a></li>
-<li><a href="multistep.html">Multistep Workflows</a></li>
-<li><a href="config.html">Params and Config Files</a></li>
-<li><a href="cluster.html">Running on the Cluster</a></li>
-<li><a href="conda.html">Using Conda with Snakemake</a></li>
-</ol>
 </div>
 
 
@@ -825,6 +607,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -857,6 +641,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
