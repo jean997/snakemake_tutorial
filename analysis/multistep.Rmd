@@ -81,7 +81,7 @@ rule plot_pca:
     shell: "Rscript code/plot_pcs.R {input} {output}"
 ```
 
-This rule makes use of a piece of code that is alread in the `code/` folder which looks like this:
+This rule makes use of a piece of code that is already in the `code/` folder which looks like this:
 
 ```
 args <- commandArgs(trailingOnly = TRUE)
@@ -96,6 +96,22 @@ dev.off()
 
 The line `args <- commandArgs(trailingOnly=TRUE)` collects the command line arguments into a variable that we can access in R. 
 
+There is an equivalent way to do this using `scripts:` in place of `shell:`. Using the `scripts:` line will cause Snakemake to directly execute a script This also works for python and Julia scripts and can be used to knit an R Markdown file into a report. If a piece of R code is run using `scripts:` we don't pass it arguments. Instead, it receives an S4 object named `snakemake` that contains all of the parameters available in the Snakefile. For our example, we could change the rule to read
+
+```
+rule plot_pca:
+    input: "results/{prefix}.eigenvec"
+    output: "results/{prefix}_pca.png"
+    scripts: "code/plot_pcs2.R"
+```
+And write a file `code/plot_pcs2.R` with this content
+
+```
+pcs <- read.table(snakemake@input[[1]])
+png(snakemake@output[[1]], height = 4, width = 5, units = "in", res = 300)
+plot(pcs$V2, pcs$V3, xlab = "PC1", ylab = "PC2", pch = 16)
+dev.off()
+```
 
 Set the input in `rule all` to the value that you think will execute the PCA workflow. Test your code by running a dry run and then execute it! Remember to add the `-j 1 -c 1` flags when you execute for real. 
 
@@ -133,6 +149,7 @@ There are several command line options that control how Snakemake decides what t
 snakemake -j 1 -c 1 -R pca
 ```
 will re-run the `pca` rule and the `plot_pca` rule. Finally the `--rerun-triggers` command line option can be used to modify the behavior of what should be re-run when. For more details on this option, check the Snakemake documentation (this is a bit beyond this tutorial).  
+
 
 ## Final Snakefile
 
