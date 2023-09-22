@@ -72,7 +72,7 @@ rule pca:
 
 Here, we have used the wildcard `{prefix}` to make our rule more generic. Look at the inputs and outputs of these rules and the previous rules. What do you expect `{prefix}` to be? 
 
-Finally, lets add a step that uses R to plot the results. To do this, we will use my favorite way to use R with Snakemake. We want an R script that we can call at the command line that takes in the PCs and outputs a plot. It will help us keep our workflow more generalizeable if we don't have to hard code these file names in the R script, so lets pass them in as arguments. Add the rule below to the Snakefile:
+Finally, lets add a step that uses R to plot the results. There are (at least) two different ways to run R with Snakemake. The first is to use the `shell:` line as we have been doing. For this method, we want an R script that we can call at the command line that takes in the PCs and outputs a plot. It will help us keep our workflow more generalizeable if we don't have to hard code these file names in the R script, so lets pass them in as arguments. Add the rule below to the Snakefile:
 
 ```
 rule plot_pca:
@@ -141,7 +141,7 @@ touch data/all_varqc.pgen
 ```
 This will update the time stamp of `data/all_varqc.pgen` to now. If you re-ran Snakemake, which steps do you think it would try to repeat? Check your answer by running a dry-run. However, removing an intermediate file will not trigger a re-run.
 
-Another way to trigger a re-run is to modify the content of the rule in the Snakefile. Note that this does not extend to the content of the scripts called by the rules. So if we modify `code/plot_pcs.R`, Snakemake will not know that it needs to re-run the plotting step. 
+Another way to trigger a re-run is to modify the content of the rule in the Snakefile. Note that if we are using the `shell:` method to call R and we change `code/plot_pcs.R`, Snakemake will not know that it needs to re-run the plotting step. However, if we use the `scripts:` method to call R and change `code/plot_pcs2.R`, Snakemake will detect this change and know it should re-run.
 
 There are several command line options that control how Snakemake decides what to re-run. The option `-F` (for force) forces Snakemake to re-run everything. Usually, this is overkill and you don't want to do this. The `-R` option can be used to tell Snakemake to re-run everything from a given rule forward. For example, 
 
