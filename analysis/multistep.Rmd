@@ -84,17 +84,14 @@ rule plot_pca:
 This rule makes use of a piece of code that is alread in the `code/` folder which looks like this:
 
 ```
-library(ggplot2)
-library(readr)
-    
-
 args <- commandArgs(trailingOnly = TRUE)
 input <- args[1]
 output <- args[2]
-    
-pcs <- read_table(input)
-my_plot <- ggplot(pcs) + geom_point(aes(x = PC1, y = PC2))
-ggsave(my_plot,  file = output, height = 4, width = 5, units = "in", dpi = 300)
+
+pcs <- read.table(input)
+png(output, height = 4, width = 5, units = "in", res = 300)
+plot(pcs$V2, pcs$V3, xlab = "PC1", ylab = "PC2", pch = 16)
+dev.off()
 ```
 
 The line `args <- commandArgs(trailingOnly=TRUE)` collects the command line arguments into a variable that we can access in R. 

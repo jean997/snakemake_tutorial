@@ -1,0 +1,51 @@
+---
+title: "Using Snakemake to Submit Jobs to the Cluster"
+author: "Jean Morrison"
+date: "2023-09-21"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+In this section, we will learn how to use Snakemake to submit jobs to the cluster.
+
+In this section we will:
+
+1. Learn about cluster related command-line options
+2. Create a file containing options for submitted jobs
+3. Learn about local rules
+
+## Submitting Jobs to the Cluster with `--slurm`
+
+A big advantage of using Snakemake is that it can take care of submitting lots of jobs to the cluster, leaving you free time to do more interesting tasks. In order for Snakemake to do this, we need to tell it how to submit jobs. 
+
+All three of the Biostatistics, CSG, and GreatLakes clusters use SLURM. As of recent versions of Snakemake, we can simply add `--slurm` to the command line execution. 
+
+On the CSG and Biostatistics clusters, the following line will work
+
+```
+snakemake --slurm --jobs 10 -p 
+```
+
+The `--jobs` flag indicates the maximum number of jobs to submit at a time. You may want to increase this if you have a larger job underway. 
+
+On GreatLakes you will (probably) also need to specify the account you are using.
+
+```
+snakemake --slurm --jobs 10 --default-resources slurm_account=<your SLURM account>
+```
+
+### Resources
+
+Every job that gets submitted to the cluster is allocated resources such as memory, time, and number of cores. These can be specified either as defaults used for every job using `--default-resources` as shown above for specifying the slurm account or they can be specified differently for each rule. To specify resources for a specific rule, add a line `resources:` to that rule with the desired specifications. For example, using 
+
+```
+rule combine_data:
+    input: expand("data/chr{c}.vcf.gz", c = range(20, 23))
+    output: "data/all.vcf.gz"
+    resources: mem_mb = 1000
+    shell: "bcftools concat -o {output} {input}"
+```
+specifies 1Gb of memory to be allocated for the `combine_data` rule. A full listing of the available cluster resources can be found in the Snakemake documentation [here](https://snakemake.readthedocs.io/en/stable/executing/cluster.html).
