@@ -2,7 +2,7 @@
 
 mkdir -p log
 snakemake \
-   -s 9.Snakefile \
+   -s 7.Snakefile \
    --use-conda \
    --conda-frontend conda \
    --keep-going \
