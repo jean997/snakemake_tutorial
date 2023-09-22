@@ -358,7 +358,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -369,8 +369,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -383,9 +383,9 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>snakemake_tutorial/</code> <span
@@ -408,36 +408,33 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtree4a6d9ceb7db038b4a795a97596356f1f8eb2e2bdtargetblank4a6d9cea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtree30c90134008958a8a944663608d021272420c243targetblank30c9013a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/jean997/snakemake_tutorial/tree/4a6d9ceb7db038b4a795a97596356f1f8eb2e2bd" target="_blank">4a6d9ce</a>
+<a href="https://github.com/jean997/snakemake_tutorial/tree/30c90134008958a8a944663608d021272420c243" target="_blank">30c9013</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtree4a6d9ceb7db038b4a795a97596356f1f8eb2e2bdtargetblank4a6d9cea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomjean997snakemaketutorialtree30c90134008958a8a944663608d021272420c243targetblank30c9013a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -447,7 +444,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/jean997/snakemake_tutorial/tree/4a6d9ceb7db038b4a795a97596356f1f8eb2e2bd" target="_blank">4a6d9ce</a>.
+<a href="https://github.com/jean997/snakemake_tutorial/tree/30c90134008958a8a944663608d021272420c243" target="_blank">30c9013</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -464,9 +461,6 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-
-Unstaged changes:
-    Modified:   analysis/multistep.Rmd
 
 </code></pre>
 <p>
@@ -512,6 +506,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/jean997/snakemake_tutorial/blob/30c90134008958a8a944663608d021272420c243/analysis/multistep.Rmd" target="_blank">30c9013</a>
+</td>
+<td>
+Jean Morrison
+</td>
+<td>
+2023-09-22
+</td>
+<td>
+Add scripts:
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/jean997/snakemake_tutorial/30c90134008958a8a944663608d021272420c243/docs/multistep.html" target="_blank">30c9013</a>
+</td>
+<td>
+Jean Morrison
+</td>
+<td>
+2023-09-22
+</td>
+<td>
+Add scripts:
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -683,7 +711,7 @@ as arguments. Add the rule below to the Snakefile:</p>
     input: &quot;results/{prefix}.eigenvec&quot;
     output: &quot;results/{prefix}_pca.png&quot;
     shell: &quot;Rscript code/plot_pcs.R {input} {output}&quot;</code></pre>
-<p>This rule makes use of a piece of code that is alread in the
+<p>This rule makes use of a piece of code that is already in the
 <code>code/</code> folder which looks like this:</p>
 <pre><code>args &lt;- commandArgs(trailingOnly = TRUE)
 input &lt;- args[1]
@@ -698,12 +726,12 @@ collects the command line arguments into a variable that we can access
 in R.</p>
 <p>There is an equivalent way to do this using <code>scripts:</code> in
 place of <code>shell:</code>. Using the <code>scripts:</code> line will
-cause Snakemake to directly execute a script (this also works for python
-and Julia scripts). If a piece of R code is run using
-<code>scripts:</code> we don’t pass it arguments. Instead, it receives
-an S4 object named <code>snakemake</code> that contains all of the
-parameters available in the Snakefile. For our example, we could change
-the rule to read</p>
+cause Snakemake to directly execute a script This also works for python
+and Julia scripts and can be used to knit an R Markdown file into a
+report. If a piece of R code is run using <code>scripts:</code> we don’t
+pass it arguments. Instead, it receives an S4 object named
+<code>snakemake</code> that contains all of the parameters available in
+the Snakefile. For our example, we could change the rule to read</p>
 <pre><code>rule plot_pca:
     input: &quot;results/{prefix}.eigenvec&quot;
     output: &quot;results/{prefix}_pca.png&quot;
