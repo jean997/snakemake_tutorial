@@ -96,13 +96,13 @@ dev.off()
 
 The line `args <- commandArgs(trailingOnly=TRUE)` collects the command line arguments into a variable that we can access in R. 
 
-There is an equivalent way to do this using `scripts:` in place of `shell:`. Using the `scripts:` line will cause Snakemake to directly execute a script This also works for python and Julia scripts and can be used to knit an R Markdown file into a report. If a piece of R code is run using `scripts:` we don't pass it arguments. Instead, it receives an S4 object named `snakemake` that contains all of the parameters available in the Snakefile. For our example, we could change the rule to read
+There is an equivalent way to do this using `script:` in place of `shell:`. Using the `script:` line will cause Snakemake to directly execute a script This also works for python and Julia scripts and can be used to knit an R Markdown file into a report. If a piece of R code is run using `script:` we don't pass it arguments. Instead, it receives an S4 object named `snakemake` that contains all of the parameters available in the Snakefile. For our example, we could change the rule to read
 
 ```
 rule plot_pca:
     input: "results/{prefix}.eigenvec"
     output: "results/{prefix}_pca.png"
-    scripts: "code/plot_pcs2.R"
+    script: "code/plot_pcs2.R"
 ```
 And write a file `code/plot_pcs2.R` with this content
 
@@ -141,7 +141,7 @@ touch data/all_varqc.pgen
 ```
 This will update the time stamp of `data/all_varqc.pgen` to now. If you re-ran Snakemake, which steps do you think it would try to repeat? Check your answer by running a dry-run. However, removing an intermediate file will not trigger a re-run.
 
-Another way to trigger a re-run is to modify the content of the rule in the Snakefile. Note that if we are using the `shell:` method to call R and we change `code/plot_pcs.R`, Snakemake will not know that it needs to re-run the plotting step. However, if we use the `scripts:` method to call R and change `code/plot_pcs2.R`, Snakemake will detect this change and know it should re-run.
+Another way to trigger a re-run is to modify the content of the rule in the Snakefile. Note that if we are using the `shell:` method to call R and we change `code/plot_pcs.R`, Snakemake will not know that it needs to re-run the plotting step. However, if we use the `script:` method to call R and change `code/plot_pcs2.R`, Snakemake will detect this change and know it should re-run.
 
 There are several command line options that control how Snakemake decides what to re-run. The option `-F` (for force) forces Snakemake to re-run everything. Usually, this is overkill and you don't want to do this. The `-R` option can be used to tell Snakemake to re-run everything from a given rule forward. For example, 
 
